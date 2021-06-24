@@ -1,0 +1,21 @@
+{
+	"frame": {
+		"name": "Frameset",
+		"module": "dag/modules/Frameset",
+		"meta": {},
+		"path": "/",
+		"redirect": "Screen"
+	},
+	"menu": [
+		{
+			"page" : true,
+			"title": "大屏",
+			"icon": "iconfont iconganzhishebei",
+			"name": "Screen",
+			"module": "dag/modules/Screen",
+			"meta" : {
+				"permission" : "Screen" 
+			}
+		}
+	]
+}
