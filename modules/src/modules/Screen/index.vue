@@ -1,127 +1,114 @@
 <template>
     <div class="screen-container">
-        <div class="screen-title">设备运维大屏</div>
+        <div class="screen-logo-title">国内航线及酒店入住情况</div>
         <div class="screen-major">
             <div class="screen-c1">
+                <div class="screen-c1-r1">
+                    <img class="screen-logo" src="images/Logo.png" />
+                </div>
                 <div class="screen-c1-r1 screen-panel">
-                    <div class="panel-title">设备省级分布排名</div>
-                    <div class="province-order-item" v-for="(item,index) in chartOptionsLeft1" :key="item.provinceName"
-                        :title="item.provinceName+'：'+item.deviceCount" :index="index+1" :count="item.deviceCount">
-                        <div :style="'width:'+item.width+'%;'">{{item.provinceName}}</div>
+                    <div class="panel-content">
+                        <div>
+                            <div>上海&nbsp;&nbsp;&nbsp;&nbsp;16:30:02</div>
+                            <div>june21 20℃~10℃~</div>
+                        </div>
                     </div>
+                    <div class="underline"></div>
                 </div>
                 <div class="screen-c1-r2 screen-panel ">
-                    <div class="panel-title">设备在线率</div>
-                    <!-- <iot-chart class="panel-chart" :option="chartOptions2"></iot-chart> -->
-                    <xui-progress ref="progress"
-                        :value="chartOptionsLeft2.onlineDeviceCount*100.0/chartOptionsLeft2.deviceCount||0"
-                        manner="circle" style="text-align:center;padding-bottom:16px;font-size:20px;" start="top"
-                        :radius="80" :line-width="10" color="#0a73ff" background-color="#ababab">
-                        <template slot-scope="prop">
-                            <div style="position:absolute;top:45%;left:50%;margin-left:-15px;">
-                                {{(prop.progress*100).toFixed(0)}}%
-                            </div>
-                        </template>
-                    </xui-progress>
-                    <div class="screen-chart2-detail">
+                    <div class="panel-content">
+                        <div class="panel-title">年度总碳排</div>
                         <div>
-                            <label>设备总数</label>
-                            <span>{{chartOptionsLeft2.deviceCount}}</span>
-                        </div>
-                        <div>
-                            <label>在线设备</label>
-                            <span>{{chartOptionsLeft2.onlineDeviceCount}}</span>
-                        </div>
-                        <div>
-                            <label>离线设备</label>
-                            <span>{{chartOptionsLeft2.offlineDeviceCount}}</span>
+                            <span class="statistics-number">527,243</span>
+                            <span class="number-unit">kg</span>
                         </div>
                     </div>
+                    <div class="underline"></div>
                 </div>
                 <div class="screen-c1-r3 screen-panel">
-                    <div class="panel-title">设备报警量</div>
-                    <iot-chart class="panel-chart" :option="chartOptionsLeft3"></iot-chart>
+                    <div class="panel-content">
+                        <div class="panel-title">年度差旅 (YDT)</div>
+                        <div class="c1-r3-item">
+                            <div class="sub-title">累计飞行人数</div>
+                            <div>
+                                <div class="statistics-number-blue" unit="人">7,909</div>
+                                <div>同比</div>
+                                <div class="zengfu">177%</div>
+                            </div>
+                        </div>
+                        <div class="c1-r3-item">
+                            <div class="sub-title">累计飞行人数</div>
+                            <div>
+                                <div class="statistics-number-blue" unit="晚">12,500</div>
+                                <div>同比</div>
+                                <div class="zengfu">177%</div>
+                            </div>
+                        </div>
+                        <div class="c1-r3-item">
+                            <div class="sub-title">累计飞行人数</div>
+                            <div>
+                                <div class="statistics-number-blue" unit="km">13,343,672</div>
+                                <div>同比</div>
+                                <div class="zengfu">177%</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="underline"></div>
                 </div>
             </div>
             <div class="screen-c2">
                 <div class="screen-c2-r1 screen-panel">
                     <div class="boss IIV"></div>
                     <div class="boss IIIV"></div>
-                    <div class="panel-title" sub="单位：台"></div>
                     <iot-chart class="panel-chart" :option="chartOptionsMap"></iot-chart>
-                    <div class="map-chart-summary">
-                        <div>
-                            <div class="summary-title">设备总数</div>
-                            <div>
-                                <span class="summary-value">{{chartOptionsLeft2.deviceCount}}</span>
-                                <span class="summary-unit">/台</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="summary-title">设备类型</div>
-                            <div>
-                                <span class="summary-value">{{chartOptionsLeft2.signalType}}</span>
-                                <span class="summary-unit">/种</span>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="screen-c2-r2">
-                    <div class="screen-c1-r2-c1 screen-panel">
-                        <div class="panel-title" sub="单位：台">日活设备</div>
-                        <iot-chart class="panel-chart" :option="chartOptionsBottom1"></iot-chart>
-                    </div>
-                    <div class="screen-c1-r2-c2 screen-panel">
-                        <div class="panel-title" sub="单位：台">每日新增设备</div>
-                        <iot-chart class="panel-chart" :option="chartOptionsBottom2"></iot-chart>
-                    </div>
-                    <div class="screen-c1-r2-c3 screen-panel">
-                        <div class="panel-title" sub="单位：台">累计激活设备</div>
-                        <iot-chart class="panel-chart" :option="chartOptionsBottom3"></iot-chart>
+                    <div class="weather-city" v-for="item in [1,2,3,4,5]" :key="item">
+                        <div class="weather sun"></div>
+                        <div>
+                            <div class="city">沈阳</div>
+                            <div class="temperature">20℃ ~ 10℃</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="screen-c3">
                 <div class="screen-c3-r1 screen-panel">
-                    <div class="panel-title">接入信号类型统计</div>
-                    <div class="screen-c3-r1-detail">
-                        <div class="screen-c3-r1-c1">
-                            <iot-chart class="panel-chart" :option="chartOptionsRight1"></iot-chart>
-                        </div>
-                        <div class="screen-c3-r1-c2">
-                            <div v-for="(item,index) in chartOptionsRight1Items" :key="item.signalType"
-                                :title="item.signal+':'+item.signalCount">
-                                <div class="item-title" style="font-size:12px;padding-bottom:5px;">
-                                    {{index+1}}.{{item.signal}}
-                                    <span style="float:right;font-size:16px;">{{item.signalCount}}</span>
-                                </div>
-                                <xui-progress class="screen-progress" :value="item.signalCount"
-                                    :options="{animate: true,total: item.total,color:'#0A73FF'}"
-                                    style="width:100%;height:5px;margin-bottom:10px;"></xui-progress>
+                    <div class="panel-title">国内Top5目的地</div>
+                    <div class="top-panel">
+                        <div class="top-panel-item" v-for="item in c3r1Data" :key="item.label">
+                            <div class="city">{{item.label}}</div>
+                            <div class="chart ">
+                                <div :style="'width:'+item.ratio+'%;'"></div>
                             </div>
+                            <div class="number">{{item.value}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="screen-c3-r2 screen-panel">
-                    <div class="panel-title">总设备日消息量</div>
-                    <iot-chart class="panel-chart" :option="chartOptionsRight2"></iot-chart>
+                    <div class="panel-title">国内Top5目的地</div>
+                    <div class="top-panel">
+                        <div class="top-panel-item" v-for="item in c3r2Data" :key="item.label">
+                            <div class="city">{{item.label}}</div>
+                            <div class="chart ">
+                                <div :style="'width:'+item.ratio+'%;'"></div>
+                            </div>
+                            <div class="number">{{item.value}}</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="screen-c3-r3 screen-panel">
-                    <div class="panel-title">总设备日消息量</div>
-                    <iot-chart class="panel-chart" :option="chartOptionsWorldMap"></iot-chart>
+                    <iot-chart class="panel-chart" style="height:200px;" :option="chartOptionsWorldMap"></iot-chart>
                 </div>
                 <div class="screen-c3-r4 screen-panel">
-                    <div class="panel-title">单台设备天消息量TOP10</div>
-                    <div class="screen-chart3-detail" style="overflow-y:auto;padding:0px 5px;">
-                        <div v-for="(item,index) in chartOptionsRight3" :key="index"
-                            :title="item.deviceSN+':'+item.statisticValue">
-                            <div class="item-title">
-                                {{index+1}}.{{item.deviceSN}}
-                                <span style="float:right;font-size:16px;">{{item.statisticValue}}</span>
+                    <div class="panel-title">国内Top5目的地</div>
+                    <div class="top-panel">
+                        <div class="top-panel-item" v-for="item in c3r4Data" :key="item.label">
+                            <div class="city">{{item.label}}</div>
+                            <div class="chart darkblue">
+                                <div :style="'width:'+item.ratio+'%;'"></div>
                             </div>
-                            <xui-progress class="screen-progress" :value="item.statisticValue"
-                                :options="{animate: true,total: item.total,color:'#0A73FF'}"
-                                style="width:100%;height:5px;"></xui-progress>
+                            <div class="number">{{item.value}}</div>
                         </div>
                     </div>
                 </div>
@@ -167,30 +154,70 @@ export default {
             chartOptions3: chart3(this, { title: "日活设备" }),
             chartOptionsMap: chartMap(this, { title: "日活设备" }),
             chartOptionsWorldMap: worldMap(this, { title: "日活设备" }),
+            c3r1Data : [{
+                label : "北京",
+                ratio : "80",
+                value : "55"
+            },{
+                label : "沈阳",
+                ratio : "55",
+                value : "28"
+            },{
+                label : "昆明",
+                ratio : "20",
+                value : "24"
+            },{
+                label : "烟台",
+                ratio : "18",
+                value : "16"
+            },{
+                label : "呼和浩特",
+                ratio : "15",
+                value : "12"
+            }],
+            c3r2Data : [{
+                label : "北京",
+                ratio : "80",
+                value : "55"
+            },{
+                label : "沈阳",
+                ratio : "55",
+                value : "28"
+            },{
+                label : "昆明",
+                ratio : "20",
+                value : "24"
+            },{
+                label : "烟台",
+                ratio : "18",
+                value : "16"
+            },{
+                label : "呼和浩特",
+                ratio : "15",
+                value : "12"
+            }],
+            c3r4Data : [{
+                label : "今日出国",
+                ratio : "50",
+                value : "20"
+            },{
+                label : "今日回国",
+                ratio : "20",
+                value : "5"
+            }]
         };
     },
     methods: {
         refresh() {
             this.refresh_left();
-            // this.refresh_left_1();
-            // this.refresh_left_2();
-            // this.refresh_left_3();
 
             this.refresh_bottom();
-            // this.refresh_bottom_1();
-            // this.refresh_bottom_2();
-            // this.refresh_bottom_3();
 
             this.refresh_right();
-            // this.refresh_right_1();
-            // this.refresh_right_2();
-            // this.refresh_right_3();
         },
         refresh_left() {
             Store.statistics("CHART_LEFT").then((res) => {
                 this.refresh_left_1(res.left1);
-                this.refresh_left_2(res.left2);
-                this.refresh_left_3(res.left3);
             });
         },
         refresh_left_1(res) {
@@ -211,124 +238,18 @@ export default {
                 });
             }, 0);
             //地图
-            this.chartOptionsMap.setOption.series[0].data = res.map(item=>({
-                name :  item.provinceName.replace("省",""),
-                value : item.deviceCount
+            this.chartOptionsMap.setOption.series[0].data = res.map((item) => ({
+                name: item.provinceName.replace("省", ""),
+                value: item.deviceCount,
             }));
-        },
-        refresh_left_2(res) {
-            this.chartOptionsLeft2 = res;
-            this.chartOptions2.setOption.series[0].data = [
-                {
-                    value: res.deviceCount - res.onlineDeviceCount,
-                    name: "离线",
-                    color: "#dedede",
-                },
-                {
-                    value: res.onlineDeviceCount,
-                    name: "在线",
-                    color: "#0A73FF",
-                },
-            ];
-        },
-        refresh_left_3(res) {
-            this.chartOptionsLeft3.setOption.xAxis.data = res.map((item) =>
-                Sunset.Dates.format(item.addTime, "yyyy-MM-dd")
-            );
-            this.chartOptionsLeft3.setOption.series[0].data = res.map(
-                (item) => item.statisticValue
-            );
         },
         refresh_bottom() {
             Store.statistics("CHART_BOTTOM").then((res) => {
-                this.refresh_bottom_1(res.bottom1);
-                this.refresh_bottom_2(res.bottom2);
-                this.refresh_bottom_3(res.bottom3);
             });
-        },
-        refresh_bottom_1(res) {
-            this.chartOptionsBottom1.setOption.xAxis.data = res.map((item) =>
-                Sunset.Dates.format(item.addTime, "yyyy-MM-dd")
-            );
-            this.chartOptionsBottom1.setOption.series[0].data = res.map(
-                (item) => item.statisticValue
-            );
-        },
-        refresh_bottom_2(res) {
-            this.chartOptionsBottom2.setOption.xAxis.data = res.map((item) =>
-                Sunset.Dates.format(item.addTime, "yyyy-MM-dd")
-            );
-            this.chartOptionsBottom2.setOption.series[0].data = res.map(
-                (item) => item.deviceCount
-            );
-        },
-        refresh_bottom_3(res) {
-            this.chartOptionsBottom3.setOption.xAxis.data = res.map((item) =>
-                Sunset.Dates.format(item.addTime, "yyyy-MM-dd")
-            );
-            this.chartOptionsBottom3.setOption.series[0].data = res.map(
-                (item) => item.statisticValue
-            );
         },
         refresh_right() {
             Store.statistics("CHART_RIGHT").then((res) => {
-                this.refresh_right_1(res.right1);
-                this.refresh_right_2(res.right2);
-                this.refresh_right_3(res.right3);
             });
-        },
-        refresh_right_1(res) {
-            var total = 0;
-            if (res.length > 0) {
-                total = res[0].signalCount;
-                res.forEach((item) => {
-                    item.total = total;
-                    item.signal = $dictionary.transcode(
-                        "CHANNEL_DATA_TYPE_LABEL",
-                        item.signalType
-                    );
-                });
-            }
-            this.chartOptionsRight1Items = res;
-            var r = 0,
-                g = 7 * 16 - 7,
-                b = 255;
-            this.chartOptionsRight1.setOption.series[0].data = res.map(
-                (item) => {
-                    r += 25;
-                    g += 25;
-                    return {
-                        value: item.signalCount,
-                        name: $dictionary.transcode(
-                            "CHANNEL_DATA_TYPE_LABEL",
-                            item.signalType
-                        ),
-                        itemStyle: {
-                            color: `#${this.toHex(r)}${this.toHex(
-                                g
-                            )}${this.toHex(b)}`,
-                        },
-                    };
-                }
-            );
-        },
-        refresh_right_2(res) {
-            this.chartOptionsRight2.setOption.xAxis.data = res.map((item) =>
-                Sunset.Dates.format(item.addTime, "yyyy-MM-dd")
-            );
-            this.chartOptionsRight2.setOption.series[0].data = res.map(
-                (item) => item.statisticValue
-            );
-        },
-        refresh_right_3(res) {
-            var total = 0;
-            if (res.length > 0) {
-                total = res[0].statisticValue;
-                res.forEach((item) => {
-                    item.total = total;
-                });
-            }
-            this.chartOptionsRight3 = res;
         },
         toHex(v) {
             v = +v;
@@ -358,13 +279,18 @@ export default {
     flex-direction: column;
     background: #000;
     color: #fff;
-    .screen-title {
-        line-height: 50px;
-        font-size: 24px;
-        text-align: center;
-        flex: 0 0 50px;
-        color: #fff;
-        background: #000;
+    padding: 40px;
+    background: radial-gradient(#265899, #265899, #01183b, #01183b);
+    .screen-logo {
+        width: 175px;
+    }
+    .screen-logo-title{
+        position: absolute;
+        font-size:28px;
+        top:100px;
+        z-index: 10;
+        left:50%;
+        transform: translate(-50%,0);
     }
     .screen-major {
         flex-grow: 1;
@@ -375,83 +301,183 @@ export default {
         }
     }
     .screen-c1 {
-        flex: 0 0 24%;
+        flex: 0 0 20%;
         display: flex;
         flex-direction: column;
-        & > div {
-            flex-grow: 1;
-            height: 33%;
+        .panel-content {
+            padding: 30px 0px;
+        }
+        .panel-title {
+            position: relative;
+            font-size: 24px;
+            color: #fff;
+            padding-bottom: 10px;
+            &:before {
+                content: "";
+                display: block;
+                width: 60px;
+                height: 5px;
+                background: #10d2ff;
+                margin-bottom: 15px;
+            }
+        }
+        .statistics-number {
+            font-size: 48px;
+            color: #ecd225;
+        }
+        .number-unit {
+            font-size: 20px;
+        }
+        .c1-r3-item {
+            padding: 30px 0px 10px 0px;
+            font-size: 20px;
+            .sub-title {
+                font-size: 18px;
+                padding-bottom: 20px;
+            }
+            .statistics-number-blue {
+                font-size: 36px;
+                color: #31c4f5;
+                padding-right: 20px;
+                &:after {
+                    content: attr(unit);
+                    display: inline-block;
+                    padding-left: 5px;
+                    font-size: 20px;
+                    color: #fff;
+                }
+            }
+            .zengfu {
+                background: #185987;
+                padding: 3px;
+                border-radius: 2px;
+                position: relative;
+                bottom: -4px;
+            }
+            & > :last-child > div {
+                display: inline-block;
+                vertical-align: bottom;
+            }
         }
     }
-    .IIV {
-        animation: IIV 3s linear 1s infinite;
-    }
-    .IIIV {
-        animation: IIV 3s linear 1.4s infinite;
+    .underline {
+        height: 1px;
+        background: #30517D;
+        width: calc(100% - 30px);
+        margin: 0px auto;
+        position: relative;
+        box-sizing: border-box;
+        &:after,
+        &:before {
+            content: "";
+            background: #92c3ff;
+            width: 7px;
+            height: 7px;
+            position: absolute;
+            top: -3px;
+        }
+        &:before {
+            left: -15px;
+        }
+        &:after {
+            right: -15px;
+        }
     }
 
-    @keyframes IIV {
-        from {
-            transform: scale(0.1);
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-            transform: scale(2.1);
-        }
-    }
-    .boss {
-        position: absolute;
-        top:50%;
-        left:50%;
-        width:300px;
-        height:300px;
-        margin-left:-150px;
-        margin-top:-150px;
-        position: absolute;
-        display: inline-block;
-        border: 0.0625rem solid rgba(255,255,255,0.3);
-        border-radius: 50%;
-        opacity: 0;
-    }
     .screen-c2 {
+        position: relative;
         flex: 1;
         display: flex;
         flex-direction: column;
         .screen-c2-r1 {
             position: relative;
             flex-grow: 1;
-            background: radial-gradient(#265899,#265899,#01183B);
             // background: url(/images/space.png);
             // background-size: cover;
         }
         .screen-c2-r2 {
-            flex: 0 0 25%;
+            flex: 0 0 10%;
             display: flex;
             flex-direction: row;
-            & > div {
-                flex-grow: 1;
-                width: 33.3%;
+            justify-content: center;
+            .weather-city {
+                width: 160px;
+                & > div {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+                .weather {
+                    width: 30px;
+                    height: 30px;
+                    padding: 5px 5px;
+                    background-position: center center;
+                    background-repeat: no-repeat;
+                    &.sun {
+                        background-image: url("/images/sun.png");
+                    }
+                }
+                .city {
+                    font-size: 16px;
+                    padding-bottom: 5px;
+                }
+                .temperature {
+                    font-size: 16px;
+                    color: #92c3ff;
+                }
             }
         }
     }
     .screen-c3 {
-        flex: 0 0 19%;
-        display: flex;
-        flex-direction: column;
-        & > div {
-            flex-grow: 1;
-            height: 25%;
+        flex: 0 0 16%;
+        .screen-panel{
+            padding-bottom:5px;
+        }
+        .panel-title{
+            font-size:24px;
+            padding-bottom:15px;
+            border-bottom:1px solid #2D4C76;
+        }
+        .top-panel{
+            padding-top:10px;
+            padding-bottom:20px;
+            .top-panel-item{
+                padding:10px 0px;
+                &>div{
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+            .city{
+                font-size:20px;
+                width:100px;
+                color:#92C3FF;
+            }
+            .chart{
+                width:126px;
+                height:8px;
+                background:#0B2651;
+                border-radius: 3px;
+                &>div{
+                    height:8px;
+                    border :1px solid #3264AB;
+                    border-radius: 3px;
+                    background: linear-gradient(to right, #23508B,#2387AF 20%, #23E0E9 50%, #23FFFE);
+                }
+                &.darkblue>div{
+                    background: linear-gradient(to right, #234A88,#2358AE 20%, #236DE6 50%, #2380FF);
+                }
+            }
+            .number{
+                font-size:20px;
+                color:#FFF;
+                padding-left:10px;
+            }
         }
     }
     .screen-panel {
-        background: rgba(#0f1418, 1);
-        border: 5px solid #000;
-        padding: 10px;
         display: flex;
         flex-direction: column;
         .panel-title {
-            font-size: 16px;
             color: #fff;
             flex: 0 0 30px;
             &:after {
@@ -463,77 +489,6 @@ export default {
         }
         .panel-chart {
             flex-grow: 1;
-        }
-    }
-    .screen-chart2-detail {
-        flex: 0 0 50px;
-        text-align: center;
-        & > div {
-            display: inline-block;
-            padding: 5px 10px;
-        }
-        label {
-            display: block;
-            color: #7acdef;
-        }
-        span {
-            padding-top: 5px;
-            display: block;
-            font-size: 24px;
-            font-weight: bold;
-            color: #0a73ff;
-        }
-    }
-    .screen-progress.xui-progress.xui-progress-line {
-        background-color: #272c31;
-    }
-    .screen-chart3-detail {
-        .item-title {
-            color: #fff;
-            padding: 10px 0px;
-        }
-    }
-
-    .province-order-item {
-        position: relative;
-        height: 35px;
-        width: calc(100% - 100px);
-        margin-left: 50px;
-        margin-bottom: 10px;
-        line-height: 35px;
-        & > div {
-            width: 0px;
-            transition: width 0.4s ease-in-out;
-            height: 100%;
-            padding-left: 10px;
-            box-sizing: border-box;
-            background: linear-gradient(to right, #0a73ff, #75d9fe);
-            overflow: visible;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        &:before {
-            content: attr(index);
-            position: absolute;
-            top: 0px;
-            left: -45px;
-            width: 35px;
-            height: 35px;
-            background: #0a73ff;
-            font-size: 18px;
-            text-align: center;
-            line-height: 35px;
-        }
-        &:after {
-            content: attr(count);
-            position: absolute;
-            top: 0px;
-            right: -60px;
-            width: 50px;
-            height: 35px;
-            font-size: 16px;
-            text-align: left;
-            line-height: 35px;
         }
     }
 
@@ -565,7 +520,7 @@ export default {
         & > div {
             border-left: 4px solid #0a73ff;
             padding: 5px 15px;
-            margin-bottom:20px;
+            margin-bottom: 20px;
         }
         color: #72d6fe;
         .summary-title {
@@ -578,6 +533,38 @@ export default {
         }
         .summary-unit {
         }
+    }
+
+    .IIV {
+        animation: IIV 3s linear 1s infinite;
+    }
+    .IIIV {
+        animation: IIV 3s linear 1.4s infinite;
+    }
+
+    @keyframes IIV {
+        from {
+            transform: scale(0.1);
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+            transform: scale(2.1);
+        }
+    }
+    .boss {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+        margin-left: -150px;
+        margin-top: -150px;
+        position: absolute;
+        display: inline-block;
+        border: 0.0625rem solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        opacity: 0;
     }
 }
 </style>
