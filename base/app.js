@@ -1,5 +1,9 @@
 // 本地注册
 import "./regist.js";
+
+import xui from "./xui/index";
+Vue.use(xui);
+
 //启动
 Promise.all([
     $import("dag/Style"),

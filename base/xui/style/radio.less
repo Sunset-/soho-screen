@@ -1,0 +1,21 @@
+.xui-radio-group.xui-radio-group-style {
+	.xui-radio {
+		// padding-right:20px;
+		> span {
+			font-size: 14px !important;
+		}
+	}
+	.xui-radio input[type="radio"] + i {
+		width: 16px;
+		height: 16px;
+	}
+
+	input[type="radio"] + i:before {
+		background: @color-primary;
+	}
+
+	input[type="radio"]:checked + i:before {
+		width: 9px;
+		height: 9px;
+	}
+}

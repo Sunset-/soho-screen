@@ -9,6 +9,7 @@ $import.regist("dag/modules/Frameset", require("../modules/src/modules/Frameset/
 
 
 $import.regist("dag/modules/Screen", require("../modules/src/modules/Screen/index.js"));
+$import.regist("dag/modules/Config", require("../modules/src/modules/Config/index.js"));
 
 $import.regist("dag/components/Charts", require("../modules/src/components/Charts/index.js"));
 

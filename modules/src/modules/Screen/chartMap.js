@@ -147,7 +147,7 @@ export default function(ctx) {
             //     realtime: false,
             //     calculable: true,
             //     inRange: {
-            //         color: ["#177EDB", "#0A5775"],
+            //         color: ["#F9FBDF", "#0A5775"],
             //     },
             // },
             geo: {
@@ -156,6 +156,7 @@ export default function(ctx) {
                     show: false,
                 },
                 roam: false,
+                zoom: "1.1",
                 itemStyle: {
                     areaColor: "rgba(27,72,121,0.6)",
                     borderColor: "#ababab",
@@ -172,7 +173,7 @@ export default function(ctx) {
             series: [{
                 type: "map",
                 map: "china",
-                zoom: "1",
+                zoom: "1.1",
                 itemStyle: {
                     areaColor: "rgba(27,72,121,0.6)",
                     borderColor: "#ababab",

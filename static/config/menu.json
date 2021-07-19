@@ -16,6 +16,16 @@
 			"meta" : {
 				"permission" : "Screen" 
 			}
+		},
+		{
+			"page" : true,
+			"title": "大屏",
+			"icon": "iconfont iconganzhishebei",
+			"name": "Config",
+			"module": "dag/modules/Config",
+			"meta" : {
+				"permission" : "Config" 
+			}
 		}
 	]
 }

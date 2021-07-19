@@ -8,9 +8,12 @@
                 </div>
                 <div class="screen-c1-r1 screen-panel">
                     <div class="panel-content">
-                        <div>
-                            <div>上海&nbsp;&nbsp;&nbsp;&nbsp;16:30:02</div>
-                            <div>june21 20℃~10℃~</div>
+                        <div class="weather-city">
+                            <div class="weather sun"></div>
+                            <div>
+                                <div class="city">上海&nbsp;&nbsp;&nbsp;&nbsp;16:30:02</div>
+                                <div class="temperature">june21 20℃~10℃</div>
+                            </div>
                         </div>
                     </div>
                     <div class="underline"></div>
@@ -114,10 +117,10 @@
                 </div>
             </div>
         </div>
+        <i class="config-trigger xui-icon xui-icon-setup_fill" @click="openConfig"></i>
     </div>
 </template>
 <script>
-const $dictionary = $import("dag/common/dictionary");
 
 import chart1 from "./chart1";
 import chart2 from "./chart2";
@@ -154,66 +157,87 @@ export default {
             chartOptions3: chart3(this, { title: "日活设备" }),
             chartOptionsMap: chartMap(this, { title: "日活设备" }),
             chartOptionsWorldMap: worldMap(this, { title: "日活设备" }),
-            c3r1Data : [{
-                label : "北京",
-                ratio : "80",
-                value : "55"
-            },{
-                label : "沈阳",
-                ratio : "55",
-                value : "28"
-            },{
-                label : "昆明",
-                ratio : "20",
-                value : "24"
-            },{
-                label : "烟台",
-                ratio : "18",
-                value : "16"
-            },{
-                label : "呼和浩特",
-                ratio : "15",
-                value : "12"
-            }],
-            c3r2Data : [{
-                label : "北京",
-                ratio : "80",
-                value : "55"
-            },{
-                label : "沈阳",
-                ratio : "55",
-                value : "28"
-            },{
-                label : "昆明",
-                ratio : "20",
-                value : "24"
-            },{
-                label : "烟台",
-                ratio : "18",
-                value : "16"
-            },{
-                label : "呼和浩特",
-                ratio : "15",
-                value : "12"
-            }],
-            c3r4Data : [{
-                label : "今日出国",
-                ratio : "50",
-                value : "20"
-            },{
-                label : "今日回国",
-                ratio : "20",
-                value : "5"
-            }]
+            c3r1Data: [
+                {
+                    label: "北京",
+                    ratio: "80",
+                    value: "55",
+                },
+                {
+                    label: "沈阳",
+                    ratio: "55",
+                    value: "28",
+                },
+                {
+                    label: "昆明",
+                    ratio: "20",
+                    value: "24",
+                },
+                {
+                    label: "烟台",
+                    ratio: "18",
+                    value: "16",
+                },
+                {
+                    label: "呼和浩特",
+                    ratio: "15",
+                    value: "12",
+                },
+            ],
+            c3r2Data: [
+                {
+                    label: "北京",
+                    ratio: "80",
+                    value: "55",
+                },
+                {
+                    label: "沈阳",
+                    ratio: "55",
+                    value: "28",
+                },
+                {
+                    label: "昆明",
+                    ratio: "20",
+                    value: "24",
+                },
+                {
+                    label: "烟台",
+                    ratio: "18",
+                    value: "16",
+                },
+                {
+                    label: "呼和浩特",
+                    ratio: "15",
+                    value: "12",
+                },
+            ],
+            c3r4Data: [
+                {
+                    label: "今日出国",
+                    ratio: "50",
+                    value: "20",
+                },
+                {
+                    label: "今日回国",
+                    ratio: "20",
+                    value: "5",
+                },
+            ],
         };
     },
     methods: {
+        openConfig(){
+          window.open(
+            `${location.protocol}//${location.host}${location.pathname}#/config`,
+            "_blank"
+          );
+        },
         refresh() {
             this.refresh_left();
 
-            this.refresh_bottom();
+            // this.refresh_bottom();
 
-            this.refresh_right();
+            // this.refresh_right();
         },
         refresh_left() {
             Store.statistics("CHART_LEFT").then((res) => {
@@ -241,15 +265,16 @@ export default {
             this.chartOptionsMap.setOption.series[0].data = res.map((item) => ({
                 name: item.provinceName.replace("省", ""),
                 value: item.deviceCount,
+                itemStyle : {
+                    areaColor : "rgba(255,0,0,0.3)"
+                }
             }));
         },
         refresh_bottom() {
-            Store.statistics("CHART_BOTTOM").then((res) => {
-            });
+            Store.statistics("CHART_BOTTOM").then((res) => {});
         },
         refresh_right() {
-            Store.statistics("CHART_RIGHT").then((res) => {
-            });
+            Store.statistics("CHART_RIGHT").then((res) => {});
         },
         toHex(v) {
             v = +v;
@@ -281,16 +306,30 @@ export default {
     color: #fff;
     padding: 40px;
     background: radial-gradient(#265899, #265899, #01183b, #01183b);
+    overflow: hidden;
     .screen-logo {
         width: 175px;
     }
-    .screen-logo-title{
+    .screen-logo-title {
         position: absolute;
-        font-size:28px;
-        top:100px;
+        font-size: 28px;
+        top: 100px;
         z-index: 10;
-        left:50%;
-        transform: translate(-50%,0);
+        left: 50%;
+        transform: translate(-50%, 0);
+    }
+    .config-trigger {
+        position: absolute;
+        font-size: 28px;
+        top: 10px;
+        right: 10px;
+        z-index: 10;
+        color: #fff;
+        font-size: 24px;
+        cursor: pointer;
+        &:hover{
+            color:#dedede;
+        }
     }
     .screen-major {
         flex-grow: 1;
@@ -319,6 +358,30 @@ export default {
                 height: 5px;
                 background: #10d2ff;
                 margin-bottom: 15px;
+            }
+        }
+        .weather-city {
+            & > div {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            .weather {
+                width: 30px;
+                height: 30px;
+                padding: 5px 5px;
+                background-position: center center;
+                background-repeat: no-repeat;
+                &.sun {
+                    background-image: url("/images/sun.png");
+                }
+            }
+            .city {
+                font-size: 20px;
+                padding-bottom: 10px;
+            }
+            .temperature {
+                font-size: 16px;
+                color: #92c3ff;
             }
         }
         .statistics-number {
@@ -362,7 +425,7 @@ export default {
     }
     .underline {
         height: 1px;
-        background: #30517D;
+        background: #30517d;
         width: calc(100% - 30px);
         margin: 0px auto;
         position: relative;
@@ -429,48 +492,60 @@ export default {
     }
     .screen-c3 {
         flex: 0 0 16%;
-        .screen-panel{
-            padding-bottom:5px;
+        .screen-panel {
+            padding-bottom: 5px;
         }
-        .panel-title{
-            font-size:24px;
-            padding-bottom:15px;
-            border-bottom:1px solid #2D4C76;
+        .panel-title {
+            font-size: 24px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #2d4c76;
         }
-        .top-panel{
-            padding-top:10px;
-            padding-bottom:20px;
-            .top-panel-item{
-                padding:10px 0px;
-                &>div{
+        .top-panel {
+            padding-top: 10px;
+            padding-bottom: 20px;
+            .top-panel-item {
+                padding: 10px 0px;
+                & > div {
                     display: inline-block;
                     vertical-align: middle;
                 }
             }
-            .city{
-                font-size:20px;
-                width:100px;
-                color:#92C3FF;
+            .city {
+                font-size: 20px;
+                width: 100px;
+                color: #92c3ff;
             }
-            .chart{
-                width:126px;
-                height:8px;
-                background:#0B2651;
+            .chart {
+                width: 126px;
+                height: 8px;
+                background: #0b2651;
                 border-radius: 3px;
-                &>div{
-                    height:8px;
-                    border :1px solid #3264AB;
+                & > div {
+                    height: 8px;
+                    border: 1px solid #3264ab;
                     border-radius: 3px;
-                    background: linear-gradient(to right, #23508B,#2387AF 20%, #23E0E9 50%, #23FFFE);
+                    background: linear-gradient(
+                        to right,
+                        #23508b,
+                        #2387af 20%,
+                        #23e0e9 50%,
+                        #23fffe
+                    );
                 }
-                &.darkblue>div{
-                    background: linear-gradient(to right, #234A88,#2358AE 20%, #236DE6 50%, #2380FF);
+                &.darkblue > div {
+                    background: linear-gradient(
+                        to right,
+                        #234a88,
+                        #2358ae 20%,
+                        #236de6 50%,
+                        #2380ff
+                    );
                 }
             }
-            .number{
-                font-size:20px;
-                color:#FFF;
-                padding-left:10px;
+            .number {
+                font-size: 20px;
+                color: #fff;
+                padding-left: 10px;
             }
         }
     }
@@ -536,18 +611,22 @@ export default {
     }
 
     .IIV {
-        animation: IIV 3s linear 1s infinite;
+        animation: IIV 6s linear 1s infinite;
     }
     .IIIV {
-        animation: IIV 3s linear 1.4s infinite;
+        animation: IIV 6s linear 1.6s infinite;
     }
 
     @keyframes IIV {
-        from {
+        1% {
+            transform: scale(0.1);
+            opacity: 0;
+        }
+        45% {
             transform: scale(0.1);
             opacity: 1;
         }
-        to {
+        100% {
             opacity: 0;
             transform: scale(2.1);
         }
@@ -556,15 +635,17 @@ export default {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 300px;
-        height: 300px;
-        margin-left: -150px;
-        margin-top: -150px;
+        width: 600px;
+        height: 600px;
+        margin-left: -300px;
+        margin-top: -300px;
         position: absolute;
         display: inline-block;
-        border: 0.0625rem solid rgba(255, 255, 255, 0.3);
+        border: 0.3925rem solid rgba(255, 255, 255, 0.2);
         border-radius: 50%;
         opacity: 0;
+
+        box-shadow: 0px 0px 30px rgba(255, 255, 255, 0.2);
     }
 }
 </style>
