@@ -52,7 +52,6 @@
 <script>
 const $tools = $import("dag/common/tools");
 const $config = $import("dag/common/config");
-const $dictionary = $import("dag/common/dictionary");
 const $business = $import("dag/common/business");
 const $http = $import("dag/common/http");
 const $tip = $import("dag/common/tip");

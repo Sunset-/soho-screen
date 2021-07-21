@@ -9,10 +9,10 @@
                 <div class="screen-c1-r1 screen-panel">
                     <div class="panel-content">
                         <div class="weather-city">
-                            <div class="weather sun"></div>
+                            <img class="weather" :src="weatherIcon(weather)" :title="weatherTitle(weather)" alt="">
                             <div>
-                                <div class="city">上海&nbsp;&nbsp;&nbsp;&nbsp;16:30:02</div>
-                                <div class="temperature">june21 20℃~10℃</div>
+                                <div class="city">上海&nbsp;&nbsp;&nbsp;&nbsp;{{time}}</div>
+                                <div class="temperature">{{date}} {{temperature(weather)}}</div>
                             </div>
                         </div>
                     </div>
@@ -22,7 +22,9 @@
                     <div class="panel-content">
                         <div class="panel-title">年度总碳排</div>
                         <div>
-                            <span class="statistics-number">527,243</span>
+                            <span class="statistics-number">
+                                <iot-counter :size="48" :number="summary.yearCarbon"></iot-counter>
+                            </span>
                             <span class="number-unit">kg</span>
                         </div>
                     </div>
@@ -32,27 +34,33 @@
                     <div class="panel-content">
                         <div class="panel-title">年度差旅 (YDT)</div>
                         <div class="c1-r3-item">
-                            <div class="sub-title">累计飞行人数</div>
+                            <div class="sub-title">累计飞行人次</div>
                             <div>
-                                <div class="statistics-number-blue" unit="人">7,909</div>
+                                <div class="statistics-number-blue" unit="人">
+                                    <iot-counter :size="34" :number="summary.yearFlight"></iot-counter>
+                                </div>
                                 <div>同比</div>
-                                <div class="zengfu">177%</div>
+                                <div class="zengfu" v-html="ratio(summary.yearFlight,summary.lastYearFlight)"></div>
                             </div>
                         </div>
                         <div class="c1-r3-item">
-                            <div class="sub-title">累计飞行人数</div>
+                            <div class="sub-title">累计入住间夜</div>
                             <div>
-                                <div class="statistics-number-blue" unit="晚">12,500</div>
+                                <div class="statistics-number-blue" unit="晚">
+                                    <iot-counter :size="34" :number="summary.yearHotel"></iot-counter>
+                                </div>
                                 <div>同比</div>
-                                <div class="zengfu">177%</div>
+                                <div class="zengfu" v-html="ratio(summary.yearHotel,summary.lastYearHotel)"></div>
                             </div>
                         </div>
                         <div class="c1-r3-item">
-                            <div class="sub-title">累计飞行人数</div>
+                            <div class="sub-title">累计飞行里程</div>
                             <div>
-                                <div class="statistics-number-blue" unit="km">13,343,672</div>
+                                <div class="statistics-number-blue" unit="km">
+                                    <iot-counter :size="34" :number="summary.yearKtm"></iot-counter>
+                                </div>
                                 <div>同比</div>
-                                <div class="zengfu">177%</div>
+                                <div class="zengfu" v-html="ratio(summary.yearKtm,summary.lastYearKtm)"></div>
                             </div>
                         </div>
                     </div>
@@ -66,11 +74,11 @@
                     <iot-chart class="panel-chart" :option="chartOptionsMap"></iot-chart>
                 </div>
                 <div class="screen-c2-r2">
-                    <div class="weather-city" v-for="item in [1,2,3,4,5]" :key="item">
-                        <div class="weather sun"></div>
+                    <div class="weather-city" v-for="item in topFlightCity" :key="item.label">
+                        <img class="weather" :src="weatherIcon(item.weather)" :title="weatherTitle(weather)" alt="">
                         <div>
-                            <div class="city">沈阳</div>
-                            <div class="temperature">20℃ ~ 10℃</div>
+                            <div class="city">{{item.label}}</div>
+                            <div class="temperature">{{temperature(item.weather)}}</div>
                         </div>
                     </div>
                 </div>
@@ -79,7 +87,7 @@
                 <div class="screen-c3-r1 screen-panel">
                     <div class="panel-title">国内Top5目的地</div>
                     <div class="top-panel">
-                        <div class="top-panel-item" v-for="item in c3r1Data" :key="item.label">
+                        <div class="top-panel-item" v-for="item in topFlightCity" :key="item.label">
                             <div class="city">{{item.label}}</div>
                             <div class="chart ">
                                 <div :style="'width:'+item.ratio+'%;'"></div>
@@ -91,7 +99,7 @@
                 <div class="screen-c3-r2 screen-panel">
                     <div class="panel-title">国内Top5目的地</div>
                     <div class="top-panel">
-                        <div class="top-panel-item" v-for="item in c3r2Data" :key="item.label">
+                        <div class="top-panel-item" v-for="item in topHotelCity" :key="item.label">
                             <div class="city">{{item.label}}</div>
                             <div class="chart ">
                                 <div :style="'width:'+item.ratio+'%;'"></div>
@@ -121,7 +129,6 @@
     </div>
 </template>
 <script>
-
 import chart1 from "./chart1";
 import chart2 from "./chart2";
 import chart3 from "./chart3";
@@ -129,13 +136,73 @@ import chartMap from "./chartMap";
 import worldMap from "./worldMap";
 
 import Store from "./store";
+import ConfigStore from "../Config/store";
+
+const $tools = $import("dag/common/tools");
+
+const MONTH = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+];
+
+const WEATHER = {
+    0: { text: "晴", icon: "/images/weather/w0.png" },
+    1: { text: "晴", icon: "/images/weather/w0.png" },
+    4: { text: "多云", icon: "/images/weather/w1.png" },
+    5: { text: "晴间多云", icon: "/images/weather/w1.png" },
+    6: { text: "晴间多云", icon: "/images/weather/w1.png" },
+    7: { text: "大部多云", icon: "/images/weather/w1.png" },
+    8: { text: "大部多云", icon: "/images/weather/w1.png" },
+    9: { text: "阴", icon: "/images/weather/w2.png" },
+    13: { text: "小雨", icon: "/images/weather/w7.png" },
+    14: { text: "中雨", icon: "/images/weather/w8.png" },
+    15: { text: "大雨", icon: "/images/weather/w6.png" },
+    16: { text: "暴雨", icon: "/images/weather/w9.png" },
+    17: { text: "大暴雨", icon: "/images/weather/w10.png" },
+    18: { text: "特大暴雨", icon: "/images/weather/w10.png" },
+    22: { text: "小雪", icon: "/images/weather/w7.png" },
+    23: { text: "中雪", icon: "/images/weather/w8.png" },
+    24: { text: "大雪", icon: "/images/weather/w9.png" },
+    25: { text: "暴雪", icon: "/images/weather/w10.png" },
+    20: { text: "雨夹雪", icon: "/images/weather/w9.png" },
+    32: { text: "风", icon: "/images/weather/w2.png" },
+    33: { text: "大风", icon: "/images/weather/w2.png" },
+    19: { text: "冻雨", icon: "/images/weather/w6.png" },
+    10: { text: "阵雨", icon: "/images/weather/w3.png" },
+    11: { text: "雷阵雨", icon: "/images/weather/w4.png" },
+    21: { text: "阵雪", icon: "/images/weather/w3.png" },
+    12: { text: "雷阵雨伴有冰雹", icon: "/images/weather/w5.png" },
+};
 
 export default {
     components: {
         IotChart: $import("dag/components/Charts").Component,
+        IotCounter: $import("dag/components/Counter").Component,
     },
     data() {
         return {
+            weather: null,
+            summary: {
+                yearCarbon: 0,
+                yearFlight: 0,
+                yearHotel: 0,
+                lastYearFlight: 0,
+                lastYearHotel: 0,
+                yearKtm: 0,
+                lastYearKtm: 0,
+            },
+            date: "",
+            time: "",
             chartOptionsLeft1: [],
             chartOptionsLeft2: {
                 alarmDeviceCount: 0,
@@ -157,34 +224,34 @@ export default {
             chartOptions3: chart3(this, { title: "日活设备" }),
             chartOptionsMap: chartMap(this, { title: "日活设备" }),
             chartOptionsWorldMap: worldMap(this, { title: "日活设备" }),
-            c3r1Data: [
-                {
-                    label: "北京",
-                    ratio: "80",
-                    value: "55",
-                },
-                {
-                    label: "沈阳",
-                    ratio: "55",
-                    value: "28",
-                },
-                {
-                    label: "昆明",
-                    ratio: "20",
-                    value: "24",
-                },
-                {
-                    label: "烟台",
-                    ratio: "18",
-                    value: "16",
-                },
-                {
-                    label: "呼和浩特",
-                    ratio: "15",
-                    value: "12",
-                },
+            topFlightCity: [
+                // {
+                //     label: "北京",
+                //     ratio: "80",
+                //     value: "55",
+                // },
+                // {
+                //     label: "沈阳",
+                //     ratio: "55",
+                //     value: "28",
+                // },
+                // {
+                //     label: "昆明",
+                //     ratio: "20",
+                //     value: "24",
+                // },
+                // {
+                //     label: "烟台",
+                //     ratio: "18",
+                //     value: "16",
+                // },
+                // {
+                //     label: "呼和浩特",
+                //     ratio: "15",
+                //     value: "12",
+                // },
             ],
-            c3r2Data: [
+            topHotelCity: [
                 {
                     label: "北京",
                     ratio: "80",
@@ -226,14 +293,64 @@ export default {
         };
     },
     methods: {
-        openConfig(){
-          window.open(
-            `${location.protocol}//${location.host}${location.pathname}#/config`,
-            "_blank"
-          );
+        openConfig() {
+            window.open(
+                `${location.protocol}//${location.host}${location.pathname}#/config`,
+                "_blank"
+            );
         },
         refresh() {
-            this.refresh_left();
+            //top city
+            Store.topCity().then((res) => {
+                // var totalFlight = res.totalFlight;
+                // var totalHotel = res.totalHotel;
+                this.weather = res.weather;
+                var topFlightCity = res.topFlightCity.filter(
+                    (item) => item.name != "上海"
+                );
+                var topHotelCity = res.topHotelCity.filter(
+                    (item) => item.name != "上海"
+                );
+                var totalFlight = topFlightCity[0]
+                    ? Math.round(Number(topFlightCity[0].count) * 1.2)
+                    : 0;
+                var totalHotel = topHotelCity[0]
+                    ? Math.round(Number(topHotelCity[0].count) * 1.2)
+                    : 0;
+                this.topFlightCity = topFlightCity.slice(0, 5).map((item) => ({
+                    label: item.name,
+                    ratio: Math.floor((item.count * 100.0) / totalFlight),
+                    value: item.count,
+                    weather: item.weather,
+                }));
+                this.topHotelCity = topHotelCity.slice(0, 5).map((item) => ({
+                    label: item.name,
+                    ratio: Math.floor((item.count * 100.0) / totalHotel),
+                    value: item.count,
+                }));
+            });
+            //summary
+            Store.summary().then((res) => {
+                this.summary = res;
+            });
+            //
+            ConfigStore.getDangerArea().then((res) => {
+                //地图风险区域
+                this.chartOptionsMap.setOption.series[0].data = res.map(
+                    (item) => ({
+                        name: item.name.replace("省", "").replace("市", ""),
+                        value: item.dangerLevel,
+                        itemStyle: {
+                            areaColor: {
+                                1: "rgba(27,72,121,0.6)",
+                                2: "rgba(255,165,0,0.4)",
+                                3: "rgba(255,0,0,0.4)",
+                            }[item.dangerLevel],
+                        },
+                    })
+                );
+            });
+            // this.refresh_left();
 
             // this.refresh_bottom();
 
@@ -262,19 +379,50 @@ export default {
                 });
             }, 0);
             //地图
-            this.chartOptionsMap.setOption.series[0].data = res.map((item) => ({
-                name: item.provinceName.replace("省", ""),
-                value: item.deviceCount,
-                itemStyle : {
-                    areaColor : "rgba(255,0,0,0.3)"
-                }
-            }));
+            // this.chartOptionsMap.setOption.series[0].data = res.map((item) => ({
+            //     name: item.provinceName.replace("省", ""),
+            //     value: item.deviceCount,
+            //     itemStyle : {
+            //         areaColor : "rgba(255,0,0,0.3)"
+            //     }
+            // }));
         },
         refresh_bottom() {
             Store.statistics("CHART_BOTTOM").then((res) => {});
         },
         refresh_right() {
             Store.statistics("CHART_RIGHT").then((res) => {});
+        },
+        temperature(weather) {
+            if (!weather) {
+                return "-";
+            }
+            return `${weather.low}℃ ~ ${weather.high}℃`;
+        },
+        weatherIcon(weather) {
+            return (
+                (weather &&
+                    WEATHER[weather.code_day] &&
+                    WEATHER[weather.code_day].icon) ||
+                ""
+            );
+        },
+        weatherTitle(weather) {
+            return (
+                (weather &&
+                    WEATHER[weather.code_day] &&
+                    WEATHER[weather.code_day].text) ||
+                ""
+            );
+        },
+        ratio(year, lastYear) {
+            if (lastYear == 0) {
+                return "-";
+            }
+            var r = Math.round(((year - lastYear) * 100.0) / lastYear);
+            return `<i class="xui-icon xui-icon-arrow-${
+                r > 0 ? "up" : "down"
+            }"></i>${Math.abs(r)}%`;
         },
         toHex(v) {
             v = +v;
@@ -290,6 +438,14 @@ export default {
     },
     mounted() {
         this.refresh();
+        setInterval(() => {
+            this.totalCarbon += Math.round(Math.random() * 2000);
+        }, 2000);
+        setInterval(() => {
+            var now = new Date();
+            this.time = Sunset.Dates.format(now, "HH:mm:ss");
+            this.date = MONTH[now.getMonth()] + now.getDate();
+        }, 50);
     },
 };
 </script>
@@ -327,8 +483,8 @@ export default {
         color: #fff;
         font-size: 24px;
         cursor: pointer;
-        &:hover{
-            color:#dedede;
+        &:hover {
+            color: #dedede;
         }
     }
     .screen-major {
@@ -361,28 +517,7 @@ export default {
             }
         }
         .weather-city {
-            & > div {
-                display: inline-block;
-                vertical-align: middle;
-            }
-            .weather {
-                width: 30px;
-                height: 30px;
-                padding: 5px 5px;
-                background-position: center center;
-                background-repeat: no-repeat;
-                &.sun {
-                    background-image: url("/images/sun.png");
-                }
-            }
-            .city {
-                font-size: 20px;
-                padding-bottom: 10px;
-            }
-            .temperature {
-                font-size: 16px;
-                color: #92c3ff;
-            }
+            width: auto;
         }
         .statistics-number {
             font-size: 48px;
@@ -393,18 +528,19 @@ export default {
         }
         .c1-r3-item {
             padding: 30px 0px 10px 0px;
-            font-size: 20px;
+            font-size: 18px;
             .sub-title {
                 font-size: 18px;
                 padding-bottom: 20px;
             }
             .statistics-number-blue {
-                font-size: 36px;
+                font-size: 34px;
                 color: #31c4f5;
-                padding-right: 20px;
+                padding-right: 15px;
                 &:after {
                     content: attr(unit);
                     display: inline-block;
+                    vertical-align: bottom;
                     padding-left: 5px;
                     font-size: 20px;
                     color: #fff;
@@ -412,7 +548,8 @@ export default {
             }
             .zengfu {
                 background: #185987;
-                padding: 3px;
+                font-size: 18px;
+                padding: 3px 4px 3px 0px;
                 border-radius: 2px;
                 position: relative;
                 bottom: -4px;
@@ -447,6 +584,31 @@ export default {
         }
     }
 
+    .weather-city {
+        width: 160px;
+        & > * {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .weather {
+            width: 40px;
+            height: 40px;
+            background-position: center center;
+            background-repeat: no-repeat;
+            padding-right: 5px;
+            &.sun {
+                background-image: url("/images/sun.png");
+            }
+        }
+        .city {
+            font-size: 16px;
+            padding-bottom: 10px;
+        }
+        .temperature {
+            font-size: 16px;
+            color: #92c3ff;
+        }
+    }
     .screen-c2 {
         position: relative;
         flex: 1;
@@ -463,31 +625,6 @@ export default {
             display: flex;
             flex-direction: row;
             justify-content: center;
-            .weather-city {
-                width: 160px;
-                & > div {
-                    display: inline-block;
-                    vertical-align: middle;
-                }
-                .weather {
-                    width: 30px;
-                    height: 30px;
-                    padding: 5px 5px;
-                    background-position: center center;
-                    background-repeat: no-repeat;
-                    &.sun {
-                        background-image: url("/images/sun.png");
-                    }
-                }
-                .city {
-                    font-size: 16px;
-                    padding-bottom: 5px;
-                }
-                .temperature {
-                    font-size: 16px;
-                    color: #92c3ff;
-                }
-            }
         }
     }
     .screen-c3 {
