@@ -11,8 +11,8 @@
                         <div class="weather-city">
                             <img class="weather" :src="weatherIcon(weather)" :title="weatherTitle(weather)" alt="">
                             <div>
-                                <div class="city">上海&nbsp;&nbsp;&nbsp;&nbsp;{{time}}</div>
-                                <div class="temperature">{{date}} {{temperature(weather)}}</div>
+                                <div class="city">上海&nbsp;&nbsp;&nbsp;{{time}}</div>
+                                <div class="temperature">{{date}}&nbsp;&nbsp;&nbsp;{{temperature(weather)}}</div>
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                 </div>
                 <div class="screen-c1-r3 screen-panel">
                     <div class="panel-content">
-                        <div class="panel-title">年度差旅 (YDT)</div>
+                        <div class="panel-title">年度差旅 (YTD)</div>
                         <div class="c1-r3-item">
                             <div class="sub-title">累计飞行人次</div>
                             <div>
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="screen-c3-r2 screen-panel">
-                    <div class="panel-title">国内Top5目的地</div>
+                    <div class="panel-title">酒店入住城市Top5</div>
                     <div class="top-panel">
                         <div class="top-panel-item" v-for="item in topHotelCity" :key="item.label">
                             <div class="city">{{item.label}}</div>
@@ -203,81 +203,10 @@ export default {
             },
             date: "",
             time: "",
-            chartOptionsLeft1: [],
-            chartOptionsLeft2: {
-                alarmDeviceCount: 0,
-                deviceCount: 0,
-                offlineDeviceCount: 0,
-                onlineDeviceCount: 0,
-                signalType: 0,
-            },
-            chartOptionsLeft3: chart3(this, { title: "设备报警量" }),
-            chartOptionsBottom1: chart3(this, { title: "日活设备" }),
-            chartOptionsBottom2: chart3(this, { title: "每日新增设备" }),
-            chartOptionsBottom3: chart3(this, { title: "累计激活设备" }),
-            chartOptionsRight1: chart2(this, { title: "接入信号类型" }),
-            chartOptionsRight1Items: [],
-            chartOptionsRight2: chart3(this, { title: "总设备消息总量" }),
-            chartOptionsRight3: [],
-            chartOptions1: chart1(this, { title: "日活设备" }),
-            chartOptions2: chart2(this, { title: "日活设备" }),
-            chartOptions3: chart3(this, { title: "日活设备" }),
-            chartOptionsMap: chartMap(this, { title: "日活设备" }),
+            chartOptionsMap: chartMap.chart(this, { title: "日活设备" }),
             chartOptionsWorldMap: worldMap(this, { title: "日活设备" }),
-            topFlightCity: [
-                // {
-                //     label: "北京",
-                //     ratio: "80",
-                //     value: "55",
-                // },
-                // {
-                //     label: "沈阳",
-                //     ratio: "55",
-                //     value: "28",
-                // },
-                // {
-                //     label: "昆明",
-                //     ratio: "20",
-                //     value: "24",
-                // },
-                // {
-                //     label: "烟台",
-                //     ratio: "18",
-                //     value: "16",
-                // },
-                // {
-                //     label: "呼和浩特",
-                //     ratio: "15",
-                //     value: "12",
-                // },
-            ],
-            topHotelCity: [
-                {
-                    label: "北京",
-                    ratio: "80",
-                    value: "55",
-                },
-                {
-                    label: "沈阳",
-                    ratio: "55",
-                    value: "28",
-                },
-                {
-                    label: "昆明",
-                    ratio: "20",
-                    value: "24",
-                },
-                {
-                    label: "烟台",
-                    ratio: "18",
-                    value: "16",
-                },
-                {
-                    label: "呼和浩特",
-                    ratio: "15",
-                    value: "12",
-                },
-            ],
+            topFlightCity: [],
+            topHotelCity: [],
             c3r4Data: [
                 {
                     label: "今日出国",
@@ -290,6 +219,7 @@ export default {
                     value: "5",
                 },
             ],
+            flightTimer: null,
         };
     },
     methods: {
@@ -300,7 +230,16 @@ export default {
             );
         },
         refresh() {
-            //top city
+            this.refreshSummary();
+            this.refreshTopCity();
+            this.refreshDangerArea();
+        },
+        refreshSummary() {
+            Store.summary().then((res) => {
+                this.summary = res;
+            });
+        },
+        refreshTopCity() {
             Store.topCity().then((res) => {
                 // var totalFlight = res.totalFlight;
                 // var totalHotel = res.totalHotel;
@@ -329,11 +268,39 @@ export default {
                     value: item.count,
                 }));
             });
-            //summary
-            Store.summary().then((res) => {
-                this.summary = res;
+        },
+        refreshDangerArea() {
+            clearTimeout(this.flightTimer);
+            Store.today().then((res) => {
+                var series = chartMap.generateData(res.flights, res.hotCity);
+                this.chartOptionsMap.setOption.series[2].data = series.hotCity;
+                if (series.flights.length < 50) {
+                    this.chartOptionsMap.setOption.series[1].data =
+                        series.flights;
+                } else {
+                    var flights = series.flights;
+                    var batchs = [];
+                    var step = 50;
+                    while (flights.length) {
+                        var batch = flights.slice(0, step);
+                        batchs.push(batch);
+                        flights.splice(0, batch.length);
+                    }
+                    this.chartOptionsMap.setOption.series[1].data = batchs[0];
+                    var index = 0;
+                    this.flightTimer = setInterval(() => {
+                        index++;
+                        if (index == batchs.length) {
+                            index = 0;
+                        }
+                        this.chartOptionsMap.setOption.series[1].data =
+                            batchs[index];
+                    }, 30000);
+                }
+                // this.chartOptionsMap.setOption.series[1].data = series.flights;
+                // this.chartOptionsMap.setOption.series[2].data = series.flights;
             });
-            //
+            //风险区域
             ConfigStore.getDangerArea().then((res) => {
                 //地图风险区域
                 this.chartOptionsMap.setOption.series[0].data = res.map(
@@ -350,51 +317,9 @@ export default {
                     })
                 );
             });
-            // this.refresh_left();
-
-            // this.refresh_bottom();
-
-            // this.refresh_right();
-        },
-        refresh_left() {
-            Store.statistics("CHART_LEFT").then((res) => {
-                this.refresh_left_1(res.left1);
-            });
-        },
-        refresh_left_1(res) {
-            var total = 0;
-            if (res.length > 0) {
-                total = res[0].deviceCount;
-                res.forEach((item) => {
-                    item.width = 0;
-                });
-            }
-            if (res.length > 5) {
-                res = res.slice(0, 5);
-            }
-            this.chartOptionsLeft1 = res;
-            setTimeout(() => {
-                res.forEach((item) => {
-                    item.width = (item.deviceCount * 100.0) / total;
-                });
-            }, 0);
-            //地图
-            // this.chartOptionsMap.setOption.series[0].data = res.map((item) => ({
-            //     name: item.provinceName.replace("省", ""),
-            //     value: item.deviceCount,
-            //     itemStyle : {
-            //         areaColor : "rgba(255,0,0,0.3)"
-            //     }
-            // }));
-        },
-        refresh_bottom() {
-            Store.statistics("CHART_BOTTOM").then((res) => {});
-        },
-        refresh_right() {
-            Store.statistics("CHART_RIGHT").then((res) => {});
         },
         temperature(weather) {
-            if (!weather) {
+            if (!weather || !weather.code_day) {
                 return "-";
             }
             return `${weather.low}℃ ~ ${weather.high}℃`;
@@ -424,23 +349,12 @@ export default {
                 r > 0 ? "up" : "down"
             }"></i>${Math.abs(r)}%`;
         },
-        toHex(v) {
-            v = +v;
-            if (v > 255) {
-                v = 255;
-            }
-            v = v.toString(16);
-            if (v.length == 1) {
-                v = "0" + v;
-            }
-            return v;
-        },
     },
     mounted() {
         this.refresh();
         setInterval(() => {
-            this.totalCarbon += Math.round(Math.random() * 2000);
-        }, 2000);
+            this.refresh();
+        }, 5 * 60000);
         setInterval(() => {
             var now = new Date();
             this.time = Sunset.Dates.format(now, "HH:mm:ss");
@@ -518,6 +432,9 @@ export default {
         }
         .weather-city {
             width: auto;
+            .city {
+                font-size: 22px;
+            }
         }
         .statistics-number {
             font-size: 48px;
