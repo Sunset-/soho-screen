@@ -6,17 +6,17 @@ import cityLoc from "./cityLoc";
 // echarts.registerMap("china", chinaJson);
 
 var SHData = [
-	[{ name: "上海" }, { name: "包头", value: 95 }],
-	[{ name: "上海" }, { name: "昆明", value: 90 }],
-	[{ name: "上海" }, { name: "广州", value: 80 }],
-	[{ name: "上海" }, { name: "郑州", value: 70 }],
-	[{ name: "上海" }, { name: "长春", value: 60 }],
-	[{ name: "上海" }, { name: "重庆", value: 50 }],
-	[{ name: "上海" }, { name: "长沙", value: 40 }],
-	[{ name: "上海" }, { name: "北京", value: 30 }],
-	[{ name: "北京" }, { name: "西安", value: 30 }],
-	[{ name: "上海" }, { name: "丹东", value: 20 }],
-	[{ name: "拉萨" }, { name: "大连", value: 10 }],
+	// [{ name: "上海" }, { name: "包头", value: 95 }],
+	// [{ name: "上海" }, { name: "昆明", value: 90 }],
+	// [{ name: "上海" }, { name: "广州", value: 80 }],
+	// [{ name: "上海" }, { name: "郑州", value: 70 }],
+	// [{ name: "上海" }, { name: "长春", value: 60 }],
+	// [{ name: "上海" }, { name: "重庆", value: 50 }],
+	// [{ name: "上海" }, { name: "长沙", value: 40 }],
+	// [{ name: "上海" }, { name: "北京", value: 30 }],
+	// [{ name: "北京" }, { name: "西安", value: 30 }],
+	// [{ name: "上海" }, { name: "丹东", value: 20 }],
+	// [{ name: "拉萨" }, { name: "大连", value: 10 }],
 ];
 
 var planePath =
@@ -34,6 +34,7 @@ function convertData(data) {
 				fromName: dataItem[0].name,
 				toName: dataItem[1].name,
 				coords: [fromCoord, toCoord], //一个包含两个到多个二维坐标的数组。在 polyline 设置为 true 时支持多于两个的坐标。
+				absTime : dataItem[2]
 			});
 		}
 	}
@@ -67,8 +68,8 @@ export default {
 						show: false,
 					},
 					roam: false,
-					zoom: "1.2",
-					left: "150",
+					zoom: "1.1",
+					left: "120",
 					itemStyle: {
 						areaColor: "rgba(27,72,121,0.6)",
 						borderColor: "#ababab",
@@ -86,8 +87,8 @@ export default {
 					{
 						type: "map",
 						map: "china",
-						zoom: "1.2",
-						left: "150",
+						zoom: "1.1",
+						left: "120",
 						itemStyle: {
 							areaColor: "rgba(27,72,121,0.6)",
 							borderColor: "#ababab",
@@ -106,13 +107,52 @@ export default {
 						data: [],
 					},
 					{
+						type: "effectScatter", //带有涟漪特效动画的散点（气泡）图。利用动画特效可以将某些想要突出的数据进行视觉突出。
+						coordinateSystem: "geo", //该系列使用的坐标系
+						zlevel: 2,
+						rippleEffect: {
+							//涟漪特效相关配置
+							period  : 4,
+							scale : 2.5,
+							brushType: "stroke",
+						},
+						label: {
+							//图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等
+							show: false,
+							position: "right",
+							formatter: "{b}",
+						},
+						symbolSize: function(val) {
+							//标记的大小
+							return Math.min(val[2] / 1, 15);
+						},
+						itemStyle: {
+							color: "#FFF",
+						},
+						data: [],
+					},
+					{
+						type: "scatter", //带有涟漪特效动画的散点（气泡）图。利用动画特效可以将某些想要突出的数据进行视觉突出。
+						coordinateSystem: "geo", //该系列使用的坐标系
+						zlevel: 3,
+						label: {
+							//图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等
+							show: false,
+						},
+						symbolSize: 1,
+						itemStyle: {
+							color: "#FFF",
+						},
+						data: [],
+					},
+					{
 						type: "lines", //用于带有起点和终点信息的线数据的绘制，主要用于地图上的航线，路线的可视化。
-						zlevel: 1,
+						zlevel: 4,
 						effect: {
 							//线特效的配置
 							show: true,
-							period: 6, //特效动画的时间
-							trailLength: 0.5, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
+							period: 8, //特效动画的时间
+							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
 							color: "#fff",
 							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
 						},
@@ -123,7 +163,67 @@ export default {
 								curveness: 0.2, //边的曲度，支持从 0 到 1 的值，值越大曲度越大
 							},
 						},
-						data: convertData(SHData), //线数据集。
+						data: [], //线数据集。
+					},
+					{
+						type: "lines", //用于带有起点和终点信息的线数据的绘制，主要用于地图上的航线，路线的可视化。
+						zlevel: 5,
+						effect: {
+							//线特效的配置
+							show: true,
+							period: 6.5, //特效动画的时间
+							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
+							color: "#fff",
+							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+						},
+						lineStyle: {
+							normal: {
+								color: "#46bee9",
+								width: 0,
+								curveness: 0.2, //边的曲度，支持从 0 到 1 的值，值越大曲度越大
+							},
+						},
+						data: [], //线数据集。
+					},
+					{
+						type: "lines", //用于带有起点和终点信息的线数据的绘制，主要用于地图上的航线，路线的可视化。
+						zlevel: 6,
+						effect: {
+							//线特效的配置
+							show: true,
+							period: 5, //特效动画的时间
+							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
+							color: "#fff",
+							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+						},
+						lineStyle: {
+							normal: {
+								color: "#46bee9",
+								width: 0,
+								curveness: 0.2, //边的曲度，支持从 0 到 1 的值，值越大曲度越大
+							},
+						},
+						data: [], //线数据集。
+					},
+					{
+						type: "lines", //用于带有起点和终点信息的线数据的绘制，主要用于地图上的航线，路线的可视化。
+						zlevel: 7,
+						effect: {
+							//线特效的配置
+							show: true,
+							period: 3.5, //特效动画的时间
+							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
+							color: "#fff",
+							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+						},
+						lineStyle: {
+							normal: {
+								color: "#46bee9",
+								width: 0,
+								curveness: 0.2, //边的曲度，支持从 0 到 1 的值，值越大曲度越大
+							},
+						},
+						data: [], //线数据集。
 					},
 					// {
 					// 	type: "lines",
@@ -145,34 +245,6 @@ export default {
 					// 	},
 					// 	data: convertData(SHData),
 					// },
-					{
-						type: "effectScatter", //带有涟漪特效动画的散点（气泡）图。利用动画特效可以将某些想要突出的数据进行视觉突出。
-						coordinateSystem: "geo", //该系列使用的坐标系
-						zlevel: 2,
-						rippleEffect: {
-							//涟漪特效相关配置
-							brushType: "fill",
-						},
-						label: {
-							//图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等
-							show: false,
-							position: "right",
-							formatter: "{b}",
-						},
-						symbolSize: function(val) {
-							//标记的大小
-							return Math.min(val[2] / 10, 15);
-						},
-						itemStyle: {
-							color: "#FFF",
-						},
-						data: SHData.map((dataItem) => {
-							return {
-								name: dataItem[1].name,
-								value: cityLoc[dataItem[1].name].concat([dataItem[1].value]),
-							};
-						}),
-					},
 				],
 			},
 		};

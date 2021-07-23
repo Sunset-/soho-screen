@@ -103,6 +103,7 @@ export default function(ctx) {
                     show: false,
                 },
                 roam: false,
+                zoom: "1.1",
                 itemStyle: {
                     areaColor: "rgba(27,72,121,0.6)",
                     borderColor: "#ababab",
@@ -120,7 +121,7 @@ export default function(ctx) {
                 {
                     type: "map",
                     map: "world",
-                    zoom: "1",
+                    zoom: "1.1",
                     itemStyle: {
                         areaColor: "rgba(27,72,121,0.6)",
                         borderColor: "#ababab",

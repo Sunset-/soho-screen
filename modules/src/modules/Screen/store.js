@@ -30,22 +30,13 @@ export default {
 		}).then((res) => {
 			var hotCity = {};
 			var flights = [];
-			var flightMap = {};
 			res.forEach((item) => {
 				if (item.orderType == ORDER_TYPE_FLIGHT) {
-					var fKey = `${item.dCityName}___${item.aCityName}`;
-					if (!flightMap[fKey]) {
-						flightMap[fKey] = true;
-						flights.push([{ name: item.dCityName }, { name: item.aCityName }]);
-					}
-					if (!hotCity[item.dCityName]) {
-						hotCity[item.dCityName] = 1;
-					}
-					if (!hotCity[item.aCityName]) {
-						hotCity[item.aCityName] = 1;
-					} else {
-						hotCity[item.aCityName] += 1;
-					}
+					flights.push({
+						fromName: item.dCityName,
+						toName: item.aCityName,
+						absTime: new Date(item.absTime).getTime(),
+					});
 				} else if (item.orderType == ORDER_TYPE_HOTEL) {
 					if (!hotCity[item.dCityName]) {
 						hotCity[item.dCityName] = item.quantity;
@@ -53,6 +44,9 @@ export default {
 						hotCity[item.dCityName] += item.quantity;
 					}
 				}
+			});
+			flights.sort((a, b) => {
+				return a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0;
 			});
 			return {
 				hotCity,

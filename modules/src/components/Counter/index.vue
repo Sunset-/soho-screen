@@ -88,7 +88,8 @@ export default {
                     justify-content: center;
                     line-height: 1;
                     overflow: hidden;
-                    // height: 1.42rem;
+                    // height: 1.42rem;    
+                    font-family: 'DINPro', serif;
                 }
             }
         }
