@@ -32,7 +32,7 @@ export default {
 		},
 		{
 			id: 5,
-			name: "内蒙古自治区",
+			name: "内蒙古",
 			sort: 32,
 			remark: "自治区",
 			dangerLevel: "1",
@@ -144,7 +144,7 @@ export default {
 		},
 		{
 			id: 21,
-			name: "广西壮族自治区",
+			name: "广西",
 			sort: 28,
 			remark: "自治区",
 			dangerLevel: "1",
@@ -165,7 +165,7 @@ export default {
 		},
 		{
 			id: 24,
-			name: "新疆维吾尔自治区",
+			name: "新疆",
 			sort: 31,
 			remark: "自治区",
 			dangerLevel: "1",
@@ -179,7 +179,7 @@ export default {
 		},
 		{
 			id: 26,
-			name: "宁夏回族自治区",
+			name: "宁夏",
 			sort: 30,
 			remark: "自治区",
 			dangerLevel: "1",
@@ -214,7 +214,7 @@ export default {
 		},
 		{
 			id: 31,
-			name: "西藏自治区",
+			name: "西藏",
 			sort: 29,
 			remark: "自治区",
 			dangerLevel: "1",

@@ -72,6 +72,20 @@
                     <div class="boss IIV"></div>
                     <div class="boss IIIV"></div>
                     <iot-chart class="panel-chart" :option="chartOptionsMap"></iot-chart>
+                    <div class="map-legends">
+                        <div>
+                            <span class="legend-flight"></span><span>飞机航线</span>
+                        </div>
+                        <div>
+                            <span class="legend-hotel"></span><span>酒店入住</span>
+                        </div>
+                        <div>
+                            <span class="legend-danger"></span><span>高风险</span>
+                        </div>
+                        <div>
+                            <span class="legend-warning"></span><span>中风险</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="screen-c2-r2">
                     <div class="weather-city" v-for="item in topFlightCity" :key="item.label">
@@ -542,6 +556,65 @@ export default {
             display: flex;
             flex-direction: row;
             justify-content: center;
+        }
+        .map-legends {
+            position: absolute;
+            right: 13%;
+            bottom: 25%;
+            font-size: 18px;
+            opacity: 0.8;
+            & > div {
+                padding-bottom: 20px;
+                & > span {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
+            }
+            .legend-flight {
+                height: 3px;
+                width: 18px;
+                background: #fff;
+                box-shadow: 0px 0px 5px #fff;
+                margin-right: 10px;
+            }
+            .legend-hotel {
+                position: relative;
+                width: 10px;
+                height: 10px;
+                border-radius: 10px;
+                background: #fff;
+                margin-left: 4px;
+                margin-right: 15px;
+                &:before {
+                    content: "";
+                    position: absolute;
+                    top: -25%;
+                    left: -25%;
+                    width: 140%;
+                    height: 140%;
+                    border: 1px solid #fff;
+                    border-radius: 10px;
+                    box-shadow: 0px 0px 5px #fff;
+                }
+            }
+            .legend-danger {
+                width: 14px;
+                height: 14px;
+                background: rgba(255, 165, 0, 0.5);
+                border: 1px solid rgba(255, 165, 0, 0.4);
+                box-shadow: 0px 0px 1px #fff;
+                margin-left: 0px;
+                margin-right: 13px;
+            }
+            .legend-warning {
+                width: 14px;
+                height: 14px;
+                background: rgba(255, 0, 0, 0.5);
+                border: 1px solid rgba(255, 0, 0, 0.4);
+                box-shadow: 0px 0px 1px #fff;
+                margin-left: 0px;
+                margin-right: 13px;
+            }
         }
     }
     .screen-c3 {
