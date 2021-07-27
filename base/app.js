@@ -8,8 +8,13 @@ Vue.use(xui);
 Promise.all([
     $import("dag/Style"),
     $import.sync("dag/common"), //同步加载
-]).then(([style]) => {
+    $import("dag/components/Edittable"),
+]).then(([style,,editTable]) => {
     const $config = $import("dag/common/config");
+    NetPosaXUI.Component.registFormField(
+      "edittable",
+      editTable.Component.default
+    );
 
     Promise.all([
         $config.init().then(() => {

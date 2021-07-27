@@ -56,7 +56,11 @@ export default {
                     }
                     barr.unshift(t);
                 });
-                if (n == 0 || this.lastN == 0) {
+                if (
+                    n == 0 ||
+                    this.lastN == 0 ||
+                    String(this.lastN).length != String(n).length
+                ) {
                     this.numberToArray = new Array(barr.length).fill(0);
                 }
                 setTimeout(() => {
@@ -88,8 +92,8 @@ export default {
                     justify-content: center;
                     line-height: 1;
                     overflow: hidden;
-                    // height: 1.42rem;    
-                    font-family: 'DINPro', serif;
+                    // height: 1.42rem;
+                    font-family: "DINPro", serif;
                 }
             }
         }

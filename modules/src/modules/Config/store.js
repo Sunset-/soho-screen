@@ -254,4 +254,17 @@ export default {
 			type: "POST",
 		});
 	},
+	saveAlarmReceiver(model) {
+		return $http({
+			url: "/api/config/saveAlarmReceiver",
+			type: "POST",
+			data: model,
+		});
+	},
+	getAlarmReceiver() {
+		return $http({
+			url: "/api/config/getAlarmReceiver",
+			type: "POST",
+		});
+	},
 };

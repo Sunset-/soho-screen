@@ -488,7 +488,7 @@ export default {
                 (weather &&
                     WEATHER[weather.code_day] &&
                     WEATHER[weather.code_day].icon) ||
-                ""
+                "/images/weather/default.png"
             );
         },
         weatherTitle(weather) {

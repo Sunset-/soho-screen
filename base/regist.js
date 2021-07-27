@@ -13,4 +13,5 @@ $import.regist("dag/modules/Config", require("../modules/src/modules/Config/inde
 
 $import.regist("dag/components/Charts", require("../modules/src/components/Charts/index.js"));
 $import.regist("dag/components/Counter", require("../modules/src/components/Counter/index.js"));
+$import.regist("dag/components/Edittable", require("../modules/src/components/Edittable/index.js"));
 

@@ -5,8 +5,8 @@
         </div>
         <div class="body">
             <div class="menu">
-                <div :class="{'menu-item':true,active:componentId=='ConfigAlarm'}" @click="go('ConfigAlarm')">行政差旅</div>
                 <div :class="{'menu-item':true,active:componentId=='DangerArea'}" @click="go('DangerArea')">风险地区录入</div>
+                <div :class="{'menu-item':true,active:componentId=='ConfigAlarm'}" @click="go('ConfigAlarm')">行政差旅告警</div>
             </div>
             <div class="major">
                 <component :is="componentId"></component>
@@ -62,6 +62,7 @@ export default {
         top: 0px;
         bottom: 0px;
         width: @side-width;
+        box-sizing: border-box;
         border-right: 1px solid #e7e8ec;
         .menu-item {
             font-size: 20px;
