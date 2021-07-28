@@ -18,7 +18,7 @@ const $tip = $import("dag/common/tip");
 export default {
     data() {
         return {
-            receivers : [],
+            receivers: [],
             formOptions: {
                 cols: 2,
                 fields: [
@@ -93,12 +93,13 @@ export default {
         refresh() {
             Store.getAlarmReceiver().then((res) => {
                 this.$refs.form.reset({
-                    receivers: JSON.stringify(this.receivers = (res || [])),
+                    receivers: JSON.stringify((this.receivers = res || [])),
                 });
             });
         },
         save(model) {
             var receivers = JSON.parse(model.receivers) || [];
+            var saveReceivers = [];
             var emailT = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
             for (var i = 0, item; (item = receivers[i++]); ) {
                 if (!item.name && !item.email) {
@@ -112,8 +113,11 @@ export default {
                     $tip("请填写合法邮箱地址", "warning");
                     return;
                 }
+                item.name = item.name.trim();
+                item.email = item.email.trim();
+                saveReceivers.push(item);
             }
-            Store.saveAlarmReceiver(receivers).then((res) => {
+            Store.saveAlarmReceiver(saveReceivers).then((res) => {
                 $tip("保存成功", "success");
                 this.refresh();
             });
