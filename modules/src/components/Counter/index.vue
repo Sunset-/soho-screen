@@ -1,9 +1,9 @@
 <template>
     <div class="component-counter">
         <div class="numberScroll">
-            <div class="screenMini" :style="'height:'+size+'px;'" v-for="(item,index) in numberToArray" :key="index">
+            <div class="screenMini" :style="'height:'+size+'rem;'" v-for="(item,index) in numberToArray" :key="index">
                 <div :style="reStyle(item)">
-                    <div v-for="(v,i) in numberBox" :style="'height:'+size+'px;font-size:'+size+'px;'" :key="i">{{v}}
+                    <div v-for="(v,i) in numberBox" :style="'height:'+size+'rem;font-size:'+size+'rem;'" :key="i">{{v}}
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@ export default {
         reStyle(number) {
             return `transform:translate(0,-${
                 (isNaN(number) ? 10 : +number) * this.size
-            }px)`;
+            }rem)`;
         },
     },
     watch: {

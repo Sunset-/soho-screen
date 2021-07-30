@@ -3,6 +3,10 @@ import "./china";
 import geo from "echarts/lib/component/geo";
 import cityLoc from "./cityLoc";
 
+function getSize() {
+	return Math.floor(window.outerHeight / 600) || 1;
+}
+
 // echarts.registerMap("china", chinaJson);
 
 var SHData = [
@@ -34,7 +38,7 @@ function convertData(data) {
 				fromName: dataItem[0].name,
 				toName: dataItem[1].name,
 				coords: [fromCoord, toCoord], //一个包含两个到多个二维坐标的数组。在 polyline 设置为 true 时支持多于两个的坐标。
-				absTime : dataItem[2]
+				absTime: dataItem[2],
 			});
 		}
 	}
@@ -112,8 +116,8 @@ export default {
 						zlevel: 2,
 						rippleEffect: {
 							//涟漪特效相关配置
-							period  : 4,
-							scale : 2.5,
+							period: 4,
+							scale: 2.5,
 							brushType: "stroke",
 						},
 						label: {
@@ -124,7 +128,7 @@ export default {
 						},
 						symbolSize: function(val) {
 							//标记的大小
-							return Math.min(val[2] / 1, 15);
+							return Math.min(val[2] * getSize(), 15 * getSize());
 						},
 						itemStyle: {
 							color: "#FFF",
@@ -154,7 +158,7 @@ export default {
 							period: 8, //特效动画的时间
 							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
 							color: "#fff",
-							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+							symbolSize: getSize() * 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
 						},
 						lineStyle: {
 							normal: {
@@ -174,7 +178,7 @@ export default {
 							period: 6.5, //特效动画的时间
 							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
 							color: "#fff",
-							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+							symbolSize: getSize() * 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
 						},
 						lineStyle: {
 							normal: {
@@ -194,7 +198,7 @@ export default {
 							period: 5, //特效动画的时间
 							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
 							color: "#fff",
-							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+							symbolSize: getSize() * 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
 						},
 						lineStyle: {
 							normal: {
@@ -214,7 +218,7 @@ export default {
 							period: 3.5, //特效动画的时间
 							trailLength: 0.6, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
 							color: "#fff",
-							symbolSize: 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
+							symbolSize: getSize() * 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
 						},
 						lineStyle: {
 							normal: {
