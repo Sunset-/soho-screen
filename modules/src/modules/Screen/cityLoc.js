@@ -1,3 +1,5 @@
+import wordCityLocs from "./worldCity";
+
 var locs = [
 	{
 		name: "北京市",
@@ -2117,6 +2119,7 @@ var locs = [
 		lat: "40.82",
 		children: [
 			{ name: "呼和浩特", log: "111.65", lat: "40.82" },
+			{ name: "巴彦淖尔", log: "107.387838", lat: "40.742673" },
 			{ name: "上默特左旗", log: "111.13", lat: "40.72" },
 			{ name: "托克托", log: "111.15", lat: "40.28" },
 			{ name: "包头", log: "110", lat: "40.58" },
@@ -2497,12 +2500,26 @@ var locs = [
 ];
 
 var locMap = {};
+var zh = {};
 locs.forEach((item) => {
-	locMap[item.name] = [item.log,item.lat];
+	locMap[item.name] = [item.log, item.lat];
+	zh[item.name] = true;
 	item.children &&
 		item.children.forEach((c) => {
-			locMap[c.name] = [c.log,c.lat];
+			locMap[c.name] = [c.log, c.lat];
+			zh[c.name] = true;
 		});
 });
 
-export default locMap;
+wordCityLocs.forEach((item) => {
+	if (item.lon < 0) {
+		item.lon += 360;
+	}
+	locMap[item.ename] = [item.lon, item.lat];
+	locMap[item.city] = [item.lon, item.lat];
+});
+
+export default {
+	locMap : locMap,
+	zh : zh
+};

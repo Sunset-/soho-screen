@@ -23,20 +23,31 @@ export default {
 			type: "POST",
 		});
 	},
-	today() {
+	today(params) {
 		return $http({
 			url: URLS.TODAY,
 			type: "POST",
+			formdata: true,
+			data: params,
 		}).then((res) => {
 			var hotCity = {};
 			var flights = [];
+			var foreignFlights = [];
 			res.forEach((item) => {
 				if (item.orderType == ORDER_TYPE_FLIGHT) {
-					flights.push({
-						fromName: item.dCityName,
-						toName: item.aCityName,
-						absTime: new Date(item.absTime).getTime(),
-					});
+					if (item.isForeign == 0) {
+						flights.push({
+							fromName: item.dCityName,
+							toName: item.aCityName,
+							absTime: new Date(item.absTime).getTime(),
+						});
+					} else if (item.isForeign == 2) {
+						foreignFlights.push({
+							fromName: item.dCityName,
+							toName: item.aCityName,
+							absTime: new Date(item.absTime).getTime(),
+						});
+					}
 				} else if (item.orderType == ORDER_TYPE_HOTEL) {
 					if (!hotCity[item.dCityName]) {
 						hotCity[item.dCityName] = item.quantity;
@@ -48,9 +59,13 @@ export default {
 			flights.sort((a, b) => {
 				return a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0;
 			});
+			foreignFlights.sort((a, b) => {
+				return a[2] < b[2] ? -1 : a[2] > b[2] ? 1 : 0;
+			});
 			return {
 				hotCity,
 				flights,
+				foreignFlights,
 			};
 		});
 	},

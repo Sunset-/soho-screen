@@ -136,7 +136,7 @@
                 </div>
                 <div class="screen-c3-r4 screen-panel">
                     <div class="panel-title">
-                        <span class="outer-num">30</span>
+                        <span class="outer-num">{{foreignCount}}</span>
                         <span class="outer-text">人&nbsp;&nbsp;海外奔波中</span>
                     </div>
                     <div class="top-panel">
@@ -280,16 +280,17 @@ export default {
             chartOptionsWorldMap: worldMap(this, { title: "日活设备" }),
             topFlightCity: [],
             topHotelCity: [],
+            foreignCount: 0,
             c3r4Data: [
                 {
                     label: "今日出国",
-                    ratio: "50",
-                    value: "20",
+                    ratio: "0",
+                    value: "0",
                 },
                 {
                     label: "今日回国",
-                    ratio: "20",
-                    value: "5",
+                    ratio: "0",
+                    value: "",
                 },
             ],
             flightTimer: null,
@@ -345,8 +346,12 @@ export default {
         refreshDangerArea() {
             clearTimeout(this.flightTimer);
             Store.today().then((res) => {
+                //酒店
                 this.chartOptionsMap.setOption.series[1].data =
                     this.generateHotelSeries(res.hotCity);
+                //国际航班
+                this.generateForeignFlightSeries(res.foreignFlights);
+                //国内航班
                 if (res.flights.length < 50) {
                     this.flightRange = "";
                     this.generateFlightSeries(res.flights);
@@ -453,12 +458,12 @@ export default {
         generateHotelSeries(hotels) {
             var hots = [];
             Object.keys(hotels).forEach((name) => {
-                if (!cityLoc[name]) {
+                if (!cityLoc.locMap[name]) {
                     return;
                 }
                 hots.push({
                     name: name,
-                    value: cityLoc[name].concat(hotels[name]),
+                    value: cityLoc.locMap[name].concat(hotels[name]),
                 });
             });
             return hots;
@@ -472,8 +477,8 @@ export default {
             var pointMap = {};
             var flightMap = {};
             flights.forEach((item) => {
-                var fromCoord = cityLoc[item.fromName]; //始发地
-                var toCoord = cityLoc[item.toName]; //目的地
+                var fromCoord = cityLoc.locMap[item.fromName]; //始发地
+                var toCoord = cityLoc.locMap[item.toName]; //目的地
                 if (!fromCoord || !toCoord) {
                     return;
                 }
@@ -520,6 +525,63 @@ export default {
             this.chartOptionsMap.setOption.series[4].data = f2;
             this.chartOptionsMap.setOption.series[5].data = f3;
             this.chartOptionsMap.setOption.series[6].data = f4;
+        },
+        generateForeignFlightSeries(flights) {
+            var points = [],
+                lines = [];
+            var pointMap = {};
+            var flightMap = {};
+            var out = 0;
+            var back = 0;
+            flights.forEach((item) => {
+                var fromCoord = cityLoc.locMap[item.fromName]; //始发地
+                var toCoord = cityLoc.locMap[item.toName]; //目的地
+                if (!fromCoord || !toCoord) {
+                    return;
+                }
+                if (cityLoc.zh[item.fromName]) {
+                    out++;
+                } else {
+                    back++;
+                }
+
+                if (!pointMap[item.fromName]) {
+                    pointMap[item.fromName] = true;
+                    points.push({
+                        name: item.fromName,
+                        value: fromCoord.concat([1]),
+                    });
+                }
+                if (!pointMap[item.toName]) {
+                    pointMap[item.toName] = true;
+                    points.push({
+                        name: item.toName,
+                        value: toCoord.concat([1]),
+                    });
+                }
+                var key = `${item.fromName}___${item.toName}`;
+
+                if (!flightMap[key]) {
+                    flightMap[key] = true;
+                    lines.push({
+                        fromName: item.fromName,
+                        toName: item.toName,
+                        coords: [fromCoord, toCoord], //一个包含两个到多个二维坐标的数组。在 polyline 设置为 true 时支持多于两个的坐标。
+                        count: 1,
+                    });
+                }
+            });
+
+            this.chartOptionsWorldMap.setOption.series[1].data = points;
+            this.chartOptionsWorldMap.setOption.series[2].data = lines;
+
+            var total = Math.ceil(Math.max(out, back) * 1.2);
+ 
+            this.foreignCount = out + back;
+            this.c3r4Data[0].ratio = Math.floor((out * 100.0) / total);
+            this.c3r4Data[0].value = out;
+            this.c3r4Data[1].ratio = Math.floor((back * 100.0) / total);
+            this.c3r4Data[1].value = back;
         },
         temperature(weather) {
             if (!weather || !weather.code_day) {
@@ -649,10 +711,10 @@ html {
             width: auto;
             .city {
                 font-size: 2.2rem;
-                span{
+                span {
                     display: inline-block;
                     vertical-align: bottom;
-                    &:first-child{
+                    &:first-child {
                         font-size: 2.5rem;
                     }
                 }
@@ -694,7 +756,7 @@ html {
                 border-radius: 0.2rem;
                 position: relative;
                 bottom: -0.4rem;
-                i{
+                i {
                     font-size: 1.8rem;
                 }
             }
