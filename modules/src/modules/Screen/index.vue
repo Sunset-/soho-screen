@@ -307,10 +307,38 @@ export default {
             this.refreshSummary();
             this.refreshTopCity();
             this.refreshDangerArea();
+            this.refreshForeign();
         },
         refreshSummary() {
             Store.summary().then((res) => {
                 this.summary = res;
+            });
+        },
+        refreshForeign() {
+            Store.foreign().then((res) => {
+                var holds = {};
+                var total = 0;
+                Object.keys(res).forEach((city) => {
+                    var count = Object.keys(res[city]).reduce((c, p) => {
+                        return c + res[city][p];
+                    }, 0);
+                    if (count > 0) {
+                        holds[city] = count;
+                        total += count;
+                    }
+                });
+                var hots = [];
+                Object.keys(holds).forEach((name) => {
+                    if (!cityLoc.locMap[name]) {
+                        return;
+                    }
+                    hots.push({
+                        name: name,
+                        value: cityLoc.locMap[name].concat(holds[name]),
+                    });
+                });
+                this.chartOptionsWorldMap.setOption.series[3].data = hots;
+                this.foreignCount = total;
             });
         },
         refreshTopCity() {
@@ -576,8 +604,7 @@ export default {
             this.chartOptionsWorldMap.setOption.series[2].data = lines;
 
             var total = Math.ceil(Math.max(out, back) * 1.2);
- 
-            this.foreignCount = out + back;
+
             this.c3r4Data[0].ratio = Math.floor((out * 100.0) / total);
             this.c3r4Data[0].value = out;
             this.c3r4Data[1].ratio = Math.floor((back * 100.0) / total);

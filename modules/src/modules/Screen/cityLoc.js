@@ -2512,7 +2512,7 @@ locs.forEach((item) => {
 });
 
 wordCityLocs.forEach((item) => {
-	if (item.lon < 0) {
+	if (+item.lon < -25) {
 		item.lon += 360;
 	}
 	locMap[item.ename] = [item.lon, item.lat];
@@ -2520,6 +2520,6 @@ wordCityLocs.forEach((item) => {
 });
 
 export default {
-	locMap : locMap,
-	zh : zh
+	locMap: locMap,
+	zh: zh,
 };

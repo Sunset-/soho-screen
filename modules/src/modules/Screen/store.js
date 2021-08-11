@@ -3,6 +3,7 @@ const URLS = {
 	TOP_CITY: "/api/statistics/topCity",
 	SUMMARY: "/api/statistics/summary",
 	TODAY: "/api/statistics/today",
+	FOREIGN: "/api/statistics/foreign",
 };
 
 const ORDER_TYPE_FLIGHT = 2;
@@ -20,6 +21,12 @@ export default {
 	summary() {
 		return $http({
 			url: URLS.SUMMARY,
+			type: "POST",
+		});
+	},
+	foreign() {
+		return $http({
+			url: URLS.FOREIGN,
 			type: "POST",
 		});
 	},

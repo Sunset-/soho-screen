@@ -52,9 +52,9 @@ export default {
 			setOption: {
 				tooltip: {
 					trigger: "item",
-					formatter(a, b, c) {
-						return `${a.name}<br/>${isNaN(a.value) ? 0 : a.value}`;
-					},
+					// formatter(a, b, c) {
+					// 	return `${a.name}<br/>${isNaN(a.value) ? 0 : a.value}`;
+					// },
 				},
 				// visualMap: {
 				//     min: 800,
@@ -91,6 +91,7 @@ export default {
 					{
 						type: "map",
 						map: "china",
+						name: "风险等级",
 						zoom: "1.1",
 						left: "120",
 						itemStyle: {
@@ -113,7 +114,11 @@ export default {
 					{
 						type: "effectScatter", //带有涟漪特效动画的散点（气泡）图。利用动画特效可以将某些想要突出的数据进行视觉突出。
 						coordinateSystem: "geo", //该系列使用的坐标系
+						name: "酒店入住人数",
 						zlevel: 2,
+						encode: {
+							value: 2,
+						},
 						rippleEffect: {
 							//涟漪特效相关配置
 							period: 4,
