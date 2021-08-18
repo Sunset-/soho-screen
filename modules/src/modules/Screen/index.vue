@@ -486,12 +486,12 @@ export default {
         generateHotelSeries(hotels) {
             var hots = [];
             Object.keys(hotels).forEach((name) => {
-                if (!cityLoc.locMap[name]) {
+                if (!cityLoc.zh[name]) {
                     return;
                 }
                 hots.push({
                     name: name,
-                    value: cityLoc.locMap[name].concat(hotels[name]),
+                    value: cityLoc.zh[name].concat(hotels[name]),
                 });
             });
             return hots;
@@ -505,8 +505,8 @@ export default {
             var pointMap = {};
             var flightMap = {};
             flights.forEach((item) => {
-                var fromCoord = cityLoc.locMap[item.fromName]; //始发地
-                var toCoord = cityLoc.locMap[item.toName]; //目的地
+                var fromCoord = cityLoc.zh[item.fromName]; //始发地
+                var toCoord = cityLoc.zh[item.toName]; //目的地
                 if (!fromCoord || !toCoord) {
                     return;
                 }
@@ -652,6 +652,9 @@ export default {
             this.time = Sunset.Dates.format(now, "HH:mm:ss");
             this.date = MONTH[now.getMonth()] + now.getDate();
         }, 50);
+        setInterval(() => {
+            location.reload();
+        }, 2 * 3600 * 1000);
     },
 };
 </script>

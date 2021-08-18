@@ -1847,6 +1847,7 @@ var locs = [
 			{ name: "乌兰", log: "98.46", lat: "36.9" },
 			{ name: "都兰", log: "98.13", lat: "36.3" },
 			{ name: "天峻", log: "99.03", lat: "37.28" },
+			{ name: "德令哈", log: "97.365169", lat: "37.365481" },
 		],
 	},
 	{
@@ -2141,6 +2142,7 @@ var locs = [
 			{ name: "察哈尔右翼前旗", log: "113.18", lat: "40.78" },
 			{ name: "四子王旗", log: "111.68", lat: "41.37" },
 			{ name: "达尔罕茂明安联合旗", log: "110.42", lat: "41.72" },
+			{ name: "达茂旗", log: "110.42", lat: "41.72" },
 			{ name: "二连浩特", log: "111.96", lat: "43.65" },
 			{ name: "阿巴哈纳尔旗", log: "116.08", lat: "43.95" },
 			{ name: "多伦", log: "116.48", lat: "42.18" },
@@ -2503,11 +2505,11 @@ var locMap = {};
 var zh = {};
 locs.forEach((item) => {
 	locMap[item.name] = [item.log, item.lat];
-	zh[item.name] = true;
+	zh[item.name] = [item.log, item.lat];
 	item.children &&
 		item.children.forEach((c) => {
 			locMap[c.name] = [c.log, c.lat];
-			zh[c.name] = true;
+			zh[c.name] = [c.log, c.lat];
 		});
 });
 

@@ -57,9 +57,9 @@ export default {
 					}
 				} else if (item.orderType == ORDER_TYPE_HOTEL) {
 					if (!hotCity[item.dCityName]) {
-						hotCity[item.dCityName] = item.quantity;
+						hotCity[item.dCityName] = item.rooms;
 					} else {
-						hotCity[item.dCityName] += item.quantity;
+						hotCity[item.dCityName] += item.rooms;
 					}
 				}
 			});

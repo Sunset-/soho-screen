@@ -100,7 +100,7 @@ export default {
         save(model) {
             var receivers = JSON.parse(model.receivers) || [];
             var saveReceivers = [];
-            var emailT = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+            var emailT = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9_.-]+(\.[a-zA-Z0-9_-]+)+$/;
             for (var i = 0, item; (item = receivers[i++]); ) {
                 if (!item.name && !item.email) {
                     continue;
