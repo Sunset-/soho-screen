@@ -1,13 +1,13 @@
 <template>
     <div class="screen-container">
-        <div class="screen-logo-title">国内航线及酒店入住情况</div>
+        <div class="screen-logo-title">国内差旅实况</div>
         <div class="screen-major">
             <div class="screen-c1">
                 <div class="screen-c1-r1">
                     <img class="screen-logo" src="images/Logo.png" />
                 </div>
                 <div class="screen-c1-r1 screen-panel">
-                    <div class="panel-content">
+                    <div class="panel-content" style="padding-top:2rem;">
                         <div class="weather-city">
                             <img class="weather" :src="weatherIcon(weather)" :title="weatherTitle(weather)" alt="">
                             <div>
@@ -72,6 +72,7 @@
                     <div class="boss IIV"></div>
                     <div class="boss IIIV"></div>
                     <iot-chart class="panel-chart" :option="chartOptionsMap"></iot-chart>
+                    <!-- <div class="diaoyudao"></div> -->
                     <div class="map-legends">
                         <div>
                             <span class="legend-flight"></span><span>飞机航线&nbsp;&nbsp;{{flightRange}}</span>
@@ -80,10 +81,13 @@
                             <span class="legend-hotel"></span><span>酒店入住</span>
                         </div>
                         <div>
-                            <span class="legend-danger"></span><span>高风险</span>
+                            <span class="legend-danger"></span><span>差旅高风险</span>
                         </div>
                         <div>
-                            <span class="legend-warning"></span><span>中风险</span>
+                            <span class="legend-warning"></span><span>差旅中风险</span>
+                        </div>
+                        <div class="map-legends-sub">
+                            (差旅风险包含：疫情，自然灾害、<br>安全事件等)
                         </div>
                     </div>
                 </div>
@@ -100,7 +104,7 @@
             </div>
             <div class="screen-c3">
                 <div class="screen-c3-r1 screen-panel">
-                    <div class="panel-title">国内Top5目的地</div>
+                    <div class="panel-title">今日航班目的地Top5<span style="float:right;">人</span></div>
                     <div class="top-panel">
                         <div class="top-panel-item" v-for="item in topFlightCity" :key="item.label">
                             <div class="city">{{item.label}}</div>
@@ -112,7 +116,7 @@
                     </div>
                 </div>
                 <div class="screen-c3-r2 screen-panel">
-                    <div class="panel-title">酒店入住城市Top5</div>
+                    <div class="panel-title">今日酒店入住地Top5<span style="float:right;">人</span></div>
                     <div class="top-panel">
                         <div class="top-panel-item" v-for="item in topHotelCity" :key="item.label">
                             <div class="city">{{item.label}}</div>
@@ -127,10 +131,10 @@
                     <iot-chart class="panel-chart" style="height:18.0rem;" :option="chartOptionsWorldMap"></iot-chart>
                     <div class="map-legends">
                         <div>
-                            <span class="legend-flight"></span><span>当天飞机航线</span>
+                            <span class="legend-flight"></span><span>今日出发航线</span>
                         </div>
                         <div>
-                            <span class="legend-hotel"></span><span>当天停留人数</span>
+                            <span class="legend-hotel"></span><span>今日差旅人员分布</span>
                         </div>
                     </div>
                 </div>
@@ -379,10 +383,61 @@ export default {
                     this.generateHotelSeries(res.hotCity);
                 //国际航班
                 this.generateForeignFlightSeries(res.foreignFlights);
+
+                // //test
+                // var testFlights = [
+                //     {
+                //         fromName: "上海",
+                //         toName: "北京",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "西安",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "西安",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "西安",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                //     {
+                //         fromName: "上海",
+                //         toName: "成都",
+                //     },
+                // ];
+                // this.generateFlightSeries(testFlights, testFlights);
+                // return;
+
                 //国内航班
                 if (res.flights.length < 50) {
                     this.flightRange = "";
-                    this.generateFlightSeries(res.flights);
+                    this.generateFlightSeries(res.flights, res.flights);
                 } else {
                     var flights = res.flights;
                     var batchs = [];
@@ -395,6 +450,7 @@ export default {
                     // }
 
                     //定时分批
+                    var allFlights = JSON.parse(JSON.stringify(flights));
                     var batch = [];
                     var timeStart = new Date();
                     timeStart.setHours(0);
@@ -436,7 +492,8 @@ export default {
                     var index = 0;
                     this.flightRange = batchs[0].range;
                     var flightSeries = this.generateFlightSeries(
-                        batchs[0].batch
+                        batchs[0].batch,
+                        allFlights
                     );
 
                     this.flightTimer = setInterval(() => {
@@ -446,7 +503,8 @@ export default {
                         }
                         this.flightRange = batchs[index].range;
                         var flightSeries = this.generateFlightSeries(
-                            batchs[index].batch
+                            batchs[index].batch,
+                            allFlights
                         );
                     }, 40000);
                 }
@@ -496,14 +554,14 @@ export default {
             });
             return hots;
         },
-        generateFlightSeries(flights) {
+        generateFlightSeries(flights, allFlights) {
             var points = [],
                 f1 = [],
                 f2 = [],
-                f3 = [],
-                f4 = [];
+                f3 = [];
             var pointMap = {};
             var flightMap = {};
+            var allFlightMap = {};
             flights.forEach((item) => {
                 var fromCoord = cityLoc.zh[item.fromName]; //始发地
                 var toCoord = cityLoc.zh[item.toName]; //目的地
@@ -536,15 +594,27 @@ export default {
                     flightMap[key].count++;
                 }
             });
-            Object.keys(flightMap).forEach((k) => {
-                if (flightMap[k].count <= 2) {
-                    f1.push(flightMap[k]);
-                } else if (flightMap[k].count <= 4) {
-                    f2.push(flightMap[k]);
-                } else if (flightMap[k].count <= 8) {
-                    f3.push(flightMap[k]);
+
+            allFlights.forEach((item) => {
+                var fromCoord = cityLoc.zh[item.fromName]; //始发地
+                var toCoord = cityLoc.zh[item.toName]; //目的地
+                if (!fromCoord || !toCoord) {
+                    return;
+                }
+                var key = `${item.fromName}___${item.toName}`;
+                if (!allFlightMap[key]) {
+                    allFlightMap[key] = 1;
                 } else {
-                    f4.push(flightMap[k]);
+                    allFlightMap[key]++;
+                }
+            });
+            Object.keys(flightMap).forEach((k) => {
+                if (allFlightMap[k] <= 2) {
+                    f1.push(flightMap[k]);
+                } else if (allFlightMap[k] <= 6) {
+                    f2.push(flightMap[k]);
+                } else {
+                    f3.push(flightMap[k]);
                 }
             });
 
@@ -552,7 +622,6 @@ export default {
             this.chartOptionsMap.setOption.series[3].data = f1;
             this.chartOptionsMap.setOption.series[4].data = f2;
             this.chartOptionsMap.setOption.series[5].data = f3;
-            this.chartOptionsMap.setOption.series[6].data = f4;
         },
         generateForeignFlightSeries(flights) {
             var points = [],
@@ -567,10 +636,15 @@ export default {
                 if (!fromCoord || !toCoord) {
                     return;
                 }
-                if (cityLoc.zh[item.fromName]) {
+                if (cityLoc.zh[item.fromName] && cityLoc.world[item.toName]) {
                     out++;
-                } else {
+                } else if (
+                    cityLoc.world[item.fromName] &&
+                    cityLoc.zh[item.toName]
+                ) {
                     back++;
+                } else {
+                    return;
                 }
 
                 if (!pointMap[item.fromName]) {
@@ -684,7 +758,7 @@ html {
     background: radial-gradient(#265899, #265899, #01183b, #01183b);
     overflow: hidden;
     .screen-logo {
-        width: 50%;
+        width: 80%;
     }
     .screen-logo-title {
         position: absolute;
@@ -720,20 +794,23 @@ html {
         display: flex;
         flex-direction: column;
         .panel-content {
-            padding: 3rem 0rem;
+            padding: 4rem 0rem;
+            &.screen-c1-r1 {
+                padding-top: 1rem;
+            }
         }
         .panel-title {
             position: relative;
             font-size: 2.4rem;
             color: #fff;
-            padding-bottom: 2rem;
+            padding-bottom: 2.5rem;
             &:before {
                 content: "";
                 display: block;
                 width: 6rem;
                 height: 0.5rem;
                 background: #10d2ff;
-                margin-bottom: 2.2rem;
+                margin-bottom: 3.2rem;
             }
         }
         .weather-city {
@@ -759,11 +836,14 @@ html {
             font-size: 2rem;
         }
         .c1-r3-item {
-            padding: 3rem 0rem 1rem 0rem;
+            padding: 2rem 0rem 2rem 0rem;
             font-size: 1.8rem;
+            &:last-child {
+                padding-bottom: 0rem;
+            }
             .sub-title {
                 font-size: 1.8rem;
-                padding-bottom: 2rem;
+                padding-bottom: 2.4rem;
             }
             .statistics-number-blue {
                 color: #31c4f5;
@@ -855,16 +935,27 @@ html {
             flex-grow: 1;
             // background: url(/images/space.png);
             // background-size: cover;
+            .diaoyudao {
+                width: 1.8rem;
+                height: 0.8rem;
+                position: absolute;
+                right: 25%;
+                bottom: 27%;
+                background-image: url(/images/diaoyudao.png);
+                background-size: contain;
+                background-repeat: no-repeat;
+                filter: brightness(67%);
+            }
         }
         .screen-c2-r2 {
-            flex: 0 0 10%;
+            flex: 0 0 6%;
             display: flex;
             flex-direction: row;
             justify-content: center;
         }
         .map-legends {
             position: absolute;
-            left: 76%;
+            left: 79%;
             bottom: 28%;
             font-size: 1.6rem;
             & > div {
@@ -873,6 +964,10 @@ html {
                     display: inline-block;
                     vertical-align: middle;
                 }
+            }
+            .map-legends-sub {
+                font-size: 0.9rem;
+                line-height: 1.5rem;
             }
             .legend-flight {
                 height: 0.3rem;
@@ -924,6 +1019,14 @@ html {
     .screen-c3 {
         flex: 0 0 18%;
         padding-top: 3rem;
+        display: flex;
+        flex-direction: column;
+        .screen-c3-r3 {
+            height: 22%;
+        }
+        .screen-c3-r4 {
+            flex-grow: 1;
+        }
         .screen-panel {
             padding-bottom: 0.5rem;
         }
@@ -992,11 +1095,14 @@ html {
         .map-legends {
             position: absolute;
             right: 1rem;
-            bottom: 2rem;
+            bottom: -0.5rem;
             font-size: 1.2rem;
             opacity: 0.9;
             & > div {
+                display: inline-block;
+                vertical-align: middle;
                 padding-bottom: 1rem;
+                margin-left: 1.5rem;
                 & > span {
                     display: inline-block;
                     vertical-align: middle;
@@ -1135,6 +1241,19 @@ html {
     }
 }
 
+@media screen and (min-height: 1079px) {
+    .screen-container {
+        .screen-c2 {
+            .screen-c2-r1 {
+                .diaoyudao {
+                    right: 22%;
+                    bottom: 26%;
+                }
+            }
+        }
+    }
+}
+
 @media screen and (max-height: 920px) {
     .screen-container {
         .screen-c1 {
@@ -1195,27 +1314,27 @@ html {
     }
 }
 
-@media screen and (min-height: 2000px) {
+@media screen and (min-height: 1600px) {
     html {
-        font-size: 125%;
+        font-size: 100%;
     }
     .screen-container {
         .screen-c1 {
             .panel-content {
-                padding: 2rem 0rem;
+                padding: 4.5rem 0rem;
             }
             .panel-title {
-                font-size: 2.2rem;
+                font-size: 3rem;
             }
             .number-unit {
                 font-size: 1.8rem;
             }
             .c1-r3-item {
-                padding: 2rem 0rem 1rem 0rem;
-                font-size: 1.6rem;
+                padding: 3rem 0rem 3rem 0rem;
+                font-size: 2rem;
                 .sub-title {
-                    font-size: 1.8rem;
-                    padding-bottom: 1.5rem;
+                    font-size: 2rem;
+                    padding-bottom: 2.5rem;
                 }
                 .statistics-number-blue {
                     font-size: 3.4rem;
@@ -1225,6 +1344,15 @@ html {
                 }
                 .zengfu {
                     font-size: 1.6rem;
+                }
+            }
+        }
+        .screen-c2 {
+            .screen-c2-r1 {
+                .diaoyudao {
+                    position: absolute;
+                    right: 26.5%;
+                    bottom: 25%;
                 }
             }
         }
@@ -1242,17 +1370,94 @@ html {
                 padding-top: 0.8rem;
                 padding-bottom: 0.5rem;
                 .top-panel-item {
-                    padding: 0.6rem 0rem;
+                    padding: 1rem 0rem;
                 }
                 .city {
-                    font-size: 1.8rem;
+                    font-size: 2.1rem;
                 }
                 .number {
-                    font-size: 1.8rem;
+                    font-size: 2.2rem;
                 }
             }
             .screen-c3-r1 {
-                padding-bottom: 2rem;
+                padding-bottom: 1rem;
+            }
+            .screen-c3-r3 {
+                display: block;
+            }
+        }
+    }
+}
+@media screen and (min-height: 2000px) {
+    html {
+        font-size: 125%;
+    }
+    .screen-container {
+        .screen-c1 {
+            .panel-content {
+                padding: 4rem 0rem;
+            }
+            .panel-title {
+                font-size: 3rem;
+            }
+            .number-unit {
+                font-size: 1.8rem;
+            }
+            .c1-r3-item {
+                padding: 2.5rem 0rem 2.5rem 0rem;
+                font-size: 2rem;
+                .sub-title {
+                    font-size: 2rem;
+                    padding-bottom: 2.5rem;
+                }
+                .statistics-number-blue {
+                    font-size: 3.4rem;
+                    &:after {
+                        font-size: 1.6rem;
+                    }
+                }
+                .zengfu {
+                    font-size: 1.6rem;
+                }
+            }
+        }
+        .screen-c2 {
+            .screen-c2-r1 {
+                .diaoyudao {
+                    position: absolute;
+                    right: 26.5%;
+                    bottom: 26%;
+                }
+            }
+        }
+        .screen-c3 {
+            padding-top: 2.5rem;
+            flex: 0 0 18%;
+            .screen-panel {
+                padding-bottom: 0.5rem;
+            }
+            .panel-title {
+                font-size: 2rem;
+                padding-bottom: 1rem;
+            }
+            .top-panel {
+                padding-top: 0.8rem;
+                padding-bottom: 0.5rem;
+                .top-panel-item {
+                    padding: 1rem 0rem;
+                }
+                .city {
+                    font-size: 2.1rem;
+                }
+                .number {
+                    font-size: 2.2rem;
+                }
+            }
+            .screen-c3-r1 {
+                padding-bottom: 1rem;
+            }
+            .screen-c3-r3 {
+                display: block;
             }
         }
     }
