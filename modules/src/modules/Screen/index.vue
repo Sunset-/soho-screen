@@ -90,11 +90,28 @@
                             (差旅风险包含：疫情，自然灾害、<br>安全事件等)
                         </div>
                     </div>
+                    <div class="map-flight-legends">
+                        <div>
+                            <span>航线变速</span>
+                            <span>今日航线数量</span>
+                        </div>
+                        <div>
+                            <span>慢(&lt;3人)</span>
+                            <span>{{flightv0}}</span>
+                        </div>
+                        <div>
+                            <span>中(4-14人)</span>
+                            <span>{{flightv1}}</span>
+                        </div>
+                        <div>
+                            <span>快(&gt;15人)</span>
+                            <span>{{flightv2}}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="screen-c2-r2">
                     <div class="weather-city" v-for="item in topFlightCity" :key="item.label">
-                        <img class="weather" :src="weatherIcon(item.weather)" :title="weatherTitle(item.weather)"
-                            alt="">
+                        <img class="weather" :src="weatherIcon(item.weather)" :title="weatherTitle(item.weather)" alt="">
                         <div>
                             <div class="city">{{item.label}}</div>
                             <div class="temperature">{{temperature(item.weather)}}</div>
@@ -259,6 +276,9 @@ const WEATHER = {
     // 12: { text: "雷阵雨伴有冰雹", icon: "/images/weather/w22.png" },
 };
 
+const FLIGHT_SPEED_V0 = 2;
+const FLIGHT_SPEED_V1 = 6;
+
 export default {
     components: {
         IotChart: $import("dag/components/Charts").Component,
@@ -277,6 +297,9 @@ export default {
                 yearKtm: 0,
                 lastYearKtm: 0,
             },
+            flightv0: 0,
+            flightv1: 0,
+            flightv2: 0,
             date: "",
             time: "",
             flightRange: "",
@@ -562,6 +585,11 @@ export default {
             var pointMap = {};
             var flightMap = {};
             var allFlightMap = {};
+            var fromCity = {},
+                toCity = {};
+            var flightv0 = 0,
+                flightv1 = 0,
+                flightv2 = 0;
             flights.forEach((item) => {
                 var fromCoord = cityLoc.zh[item.fromName]; //始发地
                 var toCoord = cityLoc.zh[item.toName]; //目的地
@@ -602,6 +630,9 @@ export default {
                     return;
                 }
                 var key = `${item.fromName}___${item.toName}`;
+                fromCity[item.fromName] = (fromCity[item.fromName]||0)+1;
+                toCity[item.toName] = (toCity[item.toName]||0)+1;
+
                 if (!allFlightMap[key]) {
                     allFlightMap[key] = 1;
                 } else {
@@ -609,12 +640,27 @@ export default {
                 }
             });
             Object.keys(flightMap).forEach((k) => {
-                if (allFlightMap[k] <= 2) {
+                if (allFlightMap[k] <= FLIGHT_SPEED_V0) {
                     f1.push(flightMap[k]);
-                } else if (allFlightMap[k] <= 6) {
+                } else if (allFlightMap[k] <= FLIGHT_SPEED_V1) {
                     f2.push(flightMap[k]);
                 } else {
                     f3.push(flightMap[k]);
+                }
+            });
+            allFlights.forEach((item) => {
+                var fromCoord = cityLoc.zh[item.fromName]; //始发地
+                var toCoord = cityLoc.zh[item.toName]; //目的地
+                if (!fromCoord || !toCoord) {
+                    return;
+                }
+                var key = `${item.fromName}___${item.toName}`;
+                if (allFlightMap[key] <= FLIGHT_SPEED_V0) {
+                    flightv0++;
+                } else if (allFlightMap[key] <= FLIGHT_SPEED_V1) {
+                    flightv1++;
+                } else {
+                    flightv2++;
                 }
             });
 
@@ -622,6 +668,36 @@ export default {
             this.chartOptionsMap.setOption.series[3].data = f1;
             this.chartOptionsMap.setOption.series[4].data = f2;
             this.chartOptionsMap.setOption.series[5].data = f3;
+
+            //top from to
+            var fromCities = Object.keys(fromCity).map(c=>({
+                c : c,
+                n : fromCity[c]
+            }));
+           var toCities =  Object.keys(toCity).map(c=>({
+                c : c,
+                n : toCity[c]
+            }));
+            fromCities.sort((a,b)=>{
+                return a.n>b.n?-1:a.n<b.n?1:0;
+            });
+            toCities.sort((a,b)=>{
+                return a.n>b.n?-1:a.n<b.n?1:0;
+            });
+            var topPointCitys = {};
+            for(var i=0;i<fromCities.length&&i<3;i++){
+                topPointCitys[fromCities[i].c] = true;
+            }
+            for(var i=0;i<toCities.length&&i<3;i++){
+                topPointCitys[toCities[i].c] = true;
+            }
+            this.chartOptionsMap.setOption.series[7].data = Object.keys(topPointCitys).map(c=>({
+                name: c,
+                value: cityLoc.zh[c].concat([1]),
+            }));
+            this.flightv0 = flightv0;
+            this.flightv1 = flightv1;
+            this.flightv2 = flightv2;
         },
         generateForeignFlightSeries(flights) {
             var points = [],
@@ -1013,6 +1089,34 @@ html {
                 box-shadow: 0rem 0rem 0.1rem #fff;
                 margin-left: 0rem;
                 margin-right: 1.3rem;
+            }
+        }
+        .map-flight-legends {
+            width: 20rem;
+            left: 8rem;
+            bottom: 12rem;
+            position: absolute;
+            border-radius: 5px;
+            background: rgba(200, 200, 200, 0.1);
+            padding: 1rem;
+            div {
+                padding: 0.6rem 0.5rem;
+                font-size: 0px;
+                &:first-child {
+                    color: #adadad;
+                }
+                span {
+                    display: inline-block;
+                    vertical-align: bottom;
+                    text-align: center;
+                    font-size: 1.5rem;
+                    &:first-child {
+                        width: 8rem;
+                    }
+                    &:last-child {
+                        width: 11rem;
+                    }
+                }
             }
         }
     }
