@@ -8,7 +8,7 @@ var locs = [
 		log: "116.46",
 		lat: "39.92",
 		children: [
-			{ name: "北京", log: "116.46", lat: "39.92" },
+			{ name: "北京",ename : "BEIJING", log: "116.46", lat: "39.92" },
 			{ name: "平谷", log: "117.1", lat: "40.13" },
 			{ name: "密云", log: "116.85", lat: "40.37" },
 			{ name: "顺义", log: "116.65", lat: "40.13" },
@@ -25,7 +25,7 @@ var locs = [
 		log: "121.48",
 		lat: "31.22",
 		children: [
-			{ name: "上海", log: "121.48", lat: "31.22" },
+			{ name: "上海",ename : "SHANGHAI", log: "121.48", lat: "31.22" },
 			{ name: "嘉定", log: "121.24", lat: "31.4" },
 			{ name: "宝山", log: "121.48", lat: "31.41" },
 			{ name: "川沙", log: "121.7", lat: "31.19" },
@@ -42,7 +42,7 @@ var locs = [
 		log: "117.2",
 		lat: "39.13",
 		children: [
-			{ name: "天津", log: "117.2", lat: "39.13" },
+			{ name: "天津",ename:"TIANJIN", log: "117.2", lat: "39.13" },
 			{ name: "宁河", log: "117.83", lat: "39.33" },
 			{ name: "静海", log: "116.92", lat: "38.93" },
 			{ name: "蓟县", log: "117.4", lat: "40.05" },
@@ -55,7 +55,7 @@ var locs = [
 		log: "106.54",
 		lat: "29.59",
 		children: [
-			{ name: "重庆", log: "106.54", lat: "29.59" },
+			{ name: "重庆",ename:"CHONGQING", log: "106.54", lat: "29.59" },
 			{ name: "綦江", log: "106.56", lat: "29.41" },
 			{ name: "长寿", log: "106.64", lat: "29.01" },
 			{ name: "南桐", log: "107.04", lat: "29.86" },
@@ -228,7 +228,7 @@ var locs = [
 		log: "112.53",
 		lat: "37.87",
 		children: [
-			{ name: "太原", log: "112.53", lat: "37.87" },
+			{ name: "太原",ename:"TAIYUAN", log: "112.53", lat: "37.87" },
 			{ name: "阳曲", log: "112.65", lat: "38.05" },
 			{ name: "娄烦", log: "111.78", lat: "38.05" },
 			{ name: "清徐", log: "112.33", lat: "37.62" },
@@ -340,10 +340,10 @@ var locs = [
 		log: "123.38",
 		lat: "41.8",
 		children: [
-			{ name: "沈阳", log: "123.38", lat: "41.8" },
+			{ name: "沈阳",ename:"SHENYANG", log: "123.38", lat: "41.8" },
 			{ name: "新民", log: "122.83", lat: "42" },
 			{ name: "辽中", log: "122.7", lat: "41.52" },
-			{ name: "大连", log: "121.62", lat: "38.92" },
+			{ name: "大连",ename:"DALIAN", log: "121.62", lat: "38.92" },
 			{ name: "金县", log: "121.7", lat: "39.13" },
 			{ name: "复县", log: "121.97", lat: "39.63" },
 			{ name: "新金", log: "121.95", lat: "39.55" },
@@ -401,7 +401,7 @@ var locs = [
 		log: "125.35",
 		lat: "43.88",
 		children: [
-			{ name: "长春", log: "125.35", lat: "43.88" },
+			{ name: "长春",ename:"CHANGCHUN", log: "125.35", lat: "43.88" },
 			{ name: "吉林", log: "126.57", lat: "43.87" },
 			{ name: "农安", log: "125.15", lat: "44.45" },
 			{ name: "德惠", log: "125.68", lat: "44.52" },
@@ -450,7 +450,7 @@ var locs = [
 		log: "126.63",
 		lat: "45.75",
 		children: [
-			{ name: "哈尔滨", log: "126.63", lat: "45.75" },
+			{ name: "哈尔滨",ename:"HAERBIN", log: "126.63", lat: "45.75" },
 			{ name: "齐齐哈尔", log: "123.97", lat: "47.33" },
 			{ name: "鹤岗", log: "130.3", lat: "47.33" },
 			{ name: "双鸭山", log: "131.17", lat: "46.65" },
@@ -480,7 +480,7 @@ var locs = [
 			{ name: "逊克", log: "128.42", lat: "49.57" },
 			{ name: "嫩江", log: "125.2", lat: "49.17" },
 			{ name: "嫩江县", log: "125.2", lat: "49.17" },
-			{ name: "佳木斯", log: "130.35", lat: "46.83" },
+			{ name: "佳木斯",ename : "JIAMUSI", log: "130.35", lat: "46.83" },
 			{ name: "桦川", log: "130.68", lat: "47.02" },
 			{ name: "萝北", log: "130.83", lat: "47.58" },
 			{ name: "绥滨", log: "131.83", lat: "47.3" },
@@ -540,7 +540,7 @@ var locs = [
 		log: "120.19",
 		lat: "30.26",
 		children: [
-			{ name: "杭州", log: "120.19", lat: "30.26" },
+			{ name: "杭州",ename:"HANGZHOU", log: "120.19", lat: "30.26" },
 			{ name: "余杭", log: "120.3", lat: "30.43" },
 			{ name: "富阳", log: "119.95", lat: "30.07" },
 			{ name: "建德", log: "119.27", lat: "29.49" },
@@ -548,7 +548,7 @@ var locs = [
 			{ name: "萧山", log: "120.25", lat: "30.16" },
 			{ name: "桐庐", log: "119.64", lat: "29.8" },
 			{ name: "淳安", log: "119.05", lat: "29.61" },
-			{ name: "宁波", log: "121.56", lat: "29.86" },
+			{ name: "宁波",ename:"NINGBO", log: "121.56", lat: "29.86" },
 			{ name: "镇海", log: "121.72", lat: "29.96" },
 			{ name: "温州", log: "120.65", lat: "28.01" },
 			{ name: "瓯海", log: "120.65", lat: "28.01" },
@@ -619,9 +619,9 @@ var locs = [
 		log: "119.3",
 		lat: "26.08",
 		children: [
-			{ name: "福州", log: "119.3", lat: "26.08" },
+			{ name: "福州",ename:"FUZHOU", log: "119.3", lat: "26.08" },
 			{ name: "闽侯", log: "119.14", lat: "26.16" },
-			{ name: "厦门", log: "118.1", lat: "24.46" },
+			{ name: "厦门",ename:"XIAMEN", log: "118.1", lat: "24.46" },
 			{ name: "同安", log: "118.15", lat: "24.74" },
 			{ name: "南平", log: "118.16", lat: "26.65" },
 			{ name: "南平", log: "118.11", lat: "27.34" },
@@ -699,7 +699,7 @@ var locs = [
 			{ name: "历城", log: "117.07", lat: "36.69" },
 			{ name: "长清", log: "116.73", lat: "36.55" },
 			{ name: "章丘", log: "117.53", lat: "36.72" },
-			{ name: "青岛", log: "120.33", lat: "36.07" },
+			{ name: "青岛",ename:"QINGDAO", log: "120.33", lat: "36.07" },
 			{ name: "崂山", log: "120.42", lat: "36.15" },
 			{ name: "胶南", log: "119.97", lat: "35.88" },
 			{ name: "即墨", log: "120.45", lat: "36.38" },
@@ -746,7 +746,7 @@ var locs = [
 			{ name: "五莲", log: "119.2", lat: "35.74" },
 			{ name: "昌乐", log: "118.83", lat: "36.69" },
 			{ name: "高都", log: "118.47", lat: "36.69" },
-			{ name: "烟台", log: "121.39", lat: "37.52" },
+			{ name: "烟台",ename:"YANTAI", log: "121.39", lat: "37.52" },
 			{ name: "牟平", log: "121.59", lat: "37.38" },
 			{ name: "文登", log: "122.05", lat: "37.2" },
 			{ name: "海阳", log: "121.17", lat: "36.76" },
@@ -821,7 +821,7 @@ var locs = [
 		log: "113.65",
 		lat: "34.76",
 		children: [
-			{ name: "郑州", log: "113.65", lat: "34.76" },
+			{ name: "郑州",ename:"ZHENGZHOU", log: "113.65", lat: "34.76" },
 			{ name: "荥阳", log: "113.35", lat: "34.79" },
 			{ name: "开封", log: "114.35", lat: "34.79" },
 			{ name: "平顶山", log: "113.29", lat: "33.75" },
@@ -949,7 +949,7 @@ var locs = [
 		log: "114.31",
 		lat: "30.52",
 		children: [
-			{ name: "武汉", log: "114.31", lat: "30.52" },
+			{ name: "武汉",ename:"WUHAN", log: "114.31", lat: "30.52" },
 			{ name: "武昌", log: "114.33", lat: "30.35" },
 			{ name: "汉阳", log: "114.02", lat: "30.57" },
 			{ name: "黄石", log: "115.09", lat: "30.2" },
@@ -996,7 +996,7 @@ var locs = [
 		log: "113",
 		lat: "28.21",
 		children: [
-			{ name: "长沙", log: "113", lat: "28.21" },
+			{ name: "长沙",ename:"CHANGSHA", log: "113", lat: "28.21" },
 			{ name: "望城", log: "112.8", lat: "28.37" },
 			{ name: "株洲", log: "113.16", lat: "27.83" },
 			{ name: "湘潭", log: "112.91", lat: "27.87" },
@@ -1100,20 +1100,20 @@ var locs = [
 		log: "113.23",
 		lat: "23.16",
 		children: [
-			{ name: "广州", log: "113.23", lat: "23.16" },
+			{ name: "广州",ename:"GUANGZHOU", log: "113.23", lat: "23.16" },
 			{ name: "花县", log: "113.19", lat: "23.4" },
 			{ name: "新十", log: "114.2", lat: "24.09" },
 			{ name: "增城", log: "113.81", lat: "23.13" },
 			{ name: "从化", log: "113.55", lat: "23.57" },
 			{ name: "龙门", log: "114.25", lat: "23.75" },
 			{ name: "番禺", log: "113.36", lat: "22.95" },
-			{ name: "海口", log: "110.35", lat: "20.02" },
+			{ name: "海口",ename:"HAIKOU", log: "110.35", lat: "20.02" },
 			{ name: "汕头", log: "116.69", lat: "23.39" },
 			{ name: "洪江", log: "110.38", lat: "21.2" },
 			{ name: "茂名", log: "110.88", lat: "21.68" },
 			{ name: "佛山", log: "113.11", lat: "23.05" },
 			{ name: "江门", log: "113.06", lat: "22.61" },
-			{ name: "深圳", log: "114.07", lat: "22.62" },
+			{ name: "深圳",ename:"SHENZHEN", log: "114.07", lat: "22.62" },
 			{ name: "宝安", log: "113.85", lat: "22.58" },
 			{ name: "珠海", log: "113.52", lat: "22.3" },
 			{ name: "韶关", log: "113.62", lat: "24.84" },
@@ -1219,6 +1219,7 @@ var locs = [
 			{ name: "东方", log: "108.64", lat: "19.09" },
 			{ name: "昌江", log: "109.03", lat: "19.25" },
 			{ name: "三沙", log: "112.346806", lat: "16.838122" },
+			{ name: "三亚",ename : "SANYA", log: "109.51626", lat: "18.25956" },
 		],
 	},
 	{
@@ -1226,7 +1227,7 @@ var locs = [
 		log: "104.06",
 		lat: "30.67",
 		children: [
-			{ name: "成都", log: "104.06", lat: "30.67" },
+			{ name: "成都",ename:"CHENGDU", log: "104.06", lat: "30.67" },
 			{ name: "金堂", log: "104.32", lat: "30.88" },
 			{ name: "双流", log: "104.94", lat: "30.57" },
 			{ name: "蒲江", log: "103.29", lat: "30.2" },
@@ -1499,7 +1500,7 @@ var locs = [
 		log: "102.73",
 		lat: "25.04",
 		children: [
-			{ name: "昆明", log: "102.73", lat: "25.04" },
+			{ name: "昆明",ename:"KUNMING", log: "102.73", lat: "25.04" },
 			{ name: "富民", log: "102.48", lat: "25.21" },
 			{ name: "晋宁", log: "102.58", lat: "24.68" },
 			{ name: "呈贡", log: "102.79", lat: "24.9" },
@@ -1640,7 +1641,7 @@ var locs = [
 		log: "115.89",
 		lat: "28.68",
 		children: [
-			{ name: "南昌", log: "115.89", lat: "28.68" },
+			{ name: "南昌",ename:"NANCHANG", log: "115.89", lat: "28.68" },
 			{ name: "新建", log: "115.8", lat: "28.69" },
 			{ name: "景德镇", log: "117.22", lat: "29.3" },
 			{ name: "萍乡", log: "113.85", lat: "27.6" },
@@ -1736,7 +1737,8 @@ var locs = [
 		log: "108.95",
 		lat: "34.27",
 		children: [
-			{ name: "西安", log: "108.95", lat: "34.27" },
+			{ name: "西安",ename : "XIAN", log: "108.95", lat: "34.27" },
+			{ name: "西安",ename : "XI'AN", log: "108.95", lat: "34.27" },
 			{ name: "长安", log: "108.97", lat: "34.18" },
 			{ name: "铜川", log: "109.11", lat: "35.09" },
 			{ name: "耀县", log: "108.98", lat: "34.91" },
@@ -1976,9 +1978,9 @@ var locs = [
 		log: "106.54",
 		lat: "29.59",
 		children: [
-			{ name: "南宁", log: "108.33", lat: "22.84" },
+			{ name: "南宁",ename:"NANNING", log: "108.33", lat: "22.84" },
 			{ name: "柳州", log: "109.4", lat: "24.33" },
-			{ name: "桂林", log: "110.28", lat: "25.29" },
+			{ name: "桂林",ename:"GUILIN", log: "110.28", lat: "25.29" },
 			{ name: "梧州", log: "111.34", lat: "23.51" },
 			{ name: "凭祥", log: "106.75", lat: "22.11" },
 			{ name: "邕宁", log: "108.49", lat: "22.74" },
@@ -2070,7 +2072,7 @@ var locs = [
 		log: "87.68",
 		lat: "43.77",
 		children: [
-			{ name: "乌鲁木齐", log: "87.68", lat: "43.77" },
+			{ name: "乌鲁木齐",ename:"WULUMUQI", log: "87.68", lat: "43.77" },
 			{ name: "克拉玛依", log: "84.77", lat: "45.59" },
 			{ name: "石河子", log: "85.94", lat: "44.27" },
 			{ name: "吐鲁番", log: "89.19", lat: "42.91" },
@@ -2104,6 +2106,7 @@ var locs = [
 			{ name: "柯平", log: "79.06", lat: "40.55" },
 			{ name: "乌什", log: "79.25", lat: "41.22" },
 			{ name: "咯什", log: "75.94", lat: "39.52" },
+			{ name: "喀什",ename:"KASHI", log: "76.000167", lat: "39.472426" },
 			{ name: "巴楚", log: "78.59", lat: "39.78" },
 			{ name: "枷师", log: "76.78", lat: "39.46" },
 			{ name: "乐普湖", log: "76.67", lat: "39.23" },
@@ -2172,7 +2175,7 @@ var locs = [
 		log: "111.65",
 		lat: "40.82",
 		children: [
-			{ name: "呼和浩特", log: "111.65", lat: "40.82" },
+			{ name: "呼和浩特",ename:"HUHEHAOTE", log: "111.65", lat: "40.82" },
 			{ name: "巴彦淖尔", log: "107.387838", lat: "40.742673" },
 			{ name: "上默特左旗", log: "111.13", lat: "40.72" },
 			{ name: "托克托", log: "111.15", lat: "40.28" },
@@ -2383,19 +2386,26 @@ var locs = [
 		name: "中国台湾",
 		log: "121.5",
 		lat: "25.14",
-		children: [{ name: "台湾", log: "121.5", lat: "25.14" }],
+		children: [
+			{ name: "台湾",ename:"TAIWAN",log: "121.5", lat: "25.14" },
+			{ name: "台北",ename:"TAIBEI", log: "121.551542", lat: "25.044714" },
+			{ name: "高雄",ename:"GAOXIONG", log: "120.322373", lat: "22.622132" },
+	],
 	},
 	{
 		name: "中国香港",
 		log: "114.1",
 		lat: "22.2",
-		children: [{ name: "香港", log: "114.1", lat: "22.2" }],
+		children: [{ name: "香港",ename:"XIANGGANG", log: "114.1", lat: "22.2" },
+		{ name: "香港",ename:"Hongkong", log: "114.1", lat: "22.2" }],
 	},
 	{
 		name: "中国澳门",
 		log: "113.33",
 		lat: "22.13",
-		children: [{ name: "澳门", log: "113.33", lat: "22.13" }],
+		children: [{ name: "澳门",ename:"Macau", log: "113.33", lat: "22.13" },
+		{ name: "澳门",ename:"Macao", log: "113.33", lat: "22.13" },
+		{ name: "澳门",ename:"AOMEN", log: "113.33", lat: "22.13" }],
 	},
 	{
 		name: "安徽省",
@@ -2488,7 +2498,7 @@ var locs = [
 		log: "118.78",
 		lat: "32.04",
 		children: [
-			{ name: "南京", log: "118.78", lat: "32.04" },
+			{ name: "南京",ename:"NANJING", log: "118.78", lat: "32.04" },
 			{ name: "江宁", log: "118.83", lat: "31.95" },
 			{ name: "六合", log: "118.83", lat: "32.36" },
 			{ name: "江浦", log: "118.62", lat: "32.07" },
@@ -2572,19 +2582,40 @@ var world = {};
 locs.forEach((item) => {
 	locMap[item.name] = [item.log, item.lat];
 	zh[item.name] = [item.log, item.lat];
+	if(item.ename){
+		item.ename = item.ename.toUpperCase();
+		locMap[item.ename] = [item.log, item.lat];
+		zh[item.ename] = [item.log, item.lat];
+	}
 	item.children &&
 		item.children.forEach((c) => {
 			locMap[c.name] = [c.log, c.lat];
 			zh[c.name] = [c.log, c.lat];
+			if(c.ename){
+				c.ename = c.ename.toUpperCase();
+				locMap[c.ename] = [c.log, c.lat];
+				zh[c.ename] = [c.log, c.lat];
+			}
 		});
 });
 
 yjCityLocs.forEach((item) => {
+	if(item.ename){
+		item.ename = item.ename.toUpperCase();
+	}
 	locMap[item.name] = [item.log, item.lat];
 	zh[item.name] = [item.log, item.lat];
+	if(item.ename){
+		item.ename = item.ename.toUpperCase();
+		locMap[item.ename] =  [item.log, item.lat];
+		zh[item.ename] = [item.log, item.lat];
+	}
 });
 
 wordCityLocs.forEach((item) => {
+	if(item.ename){
+		item.ename = item.ename.toUpperCase();
+	}
 	if (+item.lon < -25) {
 		item.lon += 360;
 	}

@@ -709,6 +709,7 @@ export default {
             flights.forEach((item) => {
                 var fromCoord = cityLoc.locMap[item.fromName]; //始发地
                 var toCoord = cityLoc.locMap[item.toName]; //目的地
+
                 if (!fromCoord || !toCoord) {
                     return;
                 }
@@ -752,6 +753,8 @@ export default {
 
             this.chartOptionsWorldMap.setOption.series[1].data = points;
             this.chartOptionsWorldMap.setOption.series[2].data = lines;
+
+            debugger;
 
             var total = Math.ceil(Math.max(out, back) * 1.2);
 

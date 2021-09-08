@@ -86,6 +86,7 @@ export default function(ctx) {
 						//线特效的配置
 						show: true,
 						period: 9, //特效动画的时间
+						// constantSpeed: 10,
 						trailLength: 0.8, //特效尾迹的长度。取从 0 到 1 的值，数值越大尾迹越长。
 						color: "#fff",
 						symbolSize: getSize() * 2, //特效标记的大小，可以设置成诸如 10 这样单一的数字，也可以用数组分开表示高和宽，例如 [20, 10] 表示标记宽为20，高为10。
@@ -102,9 +103,9 @@ export default function(ctx) {
 				{
 					type: "scatter", //带有涟漪特效动画的散点（气泡）图。利用动画特效可以将某些想要突出的数据进行视觉突出。
 					coordinateSystem: "geo", //该系列使用的坐标系
-					name: '出差人数',           
+					name: "出差人数",
 					encode: {
-						value: 2
+						value: 2,
 					},
 					zlevel: 3,
 					label: {

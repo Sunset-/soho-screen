@@ -44,22 +44,22 @@ export default {
 				if (item.orderType == ORDER_TYPE_FLIGHT) {
 					if (item.isForeign == 0) {
 						flights.push({
-							fromName: item.dCityName,
-							toName: item.aCityName,
+							fromName: item.dCityName.toUpperCase(),
+							toName: item.aCityName.toUpperCase(),
 							absTime: new Date(item.absTime).getTime(),
 						});
 					} else if (item.isForeign == 2) {
 						foreignFlights.push({
-							fromName: item.dCityName,
-							toName: item.aCityName,
+							fromName: item.dCityName.toUpperCase(),
+							toName: item.aCityName.toUpperCase(),
 							absTime: new Date(item.absTime).getTime(),
 						});
 					}
 				} else if (item.orderType == ORDER_TYPE_HOTEL) {
-					if (!hotCity[item.dCityName]) {
-						hotCity[item.dCityName] = item.rooms;
+					if (!hotCity[item.dCityName.toUpperCase()]) {
+						hotCity[item.dCityName.toUpperCase()] = item.rooms;
 					} else {
-						hotCity[item.dCityName] += item.rooms;
+						hotCity[item.dCityName.toUpperCase()] += item.rooms;
 					}
 				}
 			});
