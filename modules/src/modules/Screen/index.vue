@@ -90,7 +90,7 @@
                             (差旅风险包含：疫情，自然灾害、<br>安全事件等)
                         </div>
                     </div>
-                    <div class="map-flight-legends">
+                    <!-- <div class="map-flight-legends">
                         <div>
                             <span>航线变速</span>
                             <span>今日航线数量</span>
@@ -107,11 +107,12 @@
                             <span>快(&gt;15人)</span>
                             <span>{{flightv2}}</span>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="screen-c2-r2">
                     <div class="weather-city" v-for="item in topFlightCity" :key="item.label">
-                        <img class="weather" :src="weatherIcon(item.weather)" :title="weatherTitle(item.weather)" alt="">
+                        <img class="weather" :src="weatherIcon(item.weather)" :title="weatherTitle(item.weather)"
+                            alt="">
                         <div>
                             <div class="city">{{item.label}}</div>
                             <div class="temperature">{{temperature(item.weather)}}</div>
@@ -630,8 +631,8 @@ export default {
                     return;
                 }
                 var key = `${item.fromName}___${item.toName}`;
-                fromCity[item.fromName] = (fromCity[item.fromName]||0)+1;
-                toCity[item.toName] = (toCity[item.toName]||0)+1;
+                fromCity[item.fromName] = (fromCity[item.fromName] || 0) + 1;
+                toCity[item.toName] = (toCity[item.toName] || 0) + 1;
 
                 if (!allFlightMap[key]) {
                     allFlightMap[key] = 1;
@@ -670,31 +671,31 @@ export default {
             this.chartOptionsMap.setOption.series[5].data = f3;
 
             //top from to
-            var fromCities = Object.keys(fromCity).map(c=>({
-                c : c,
-                n : fromCity[c]
+            var fromCities = Object.keys(fromCity).map((c) => ({
+                c: c,
+                n: fromCity[c],
             }));
-           var toCities =  Object.keys(toCity).map(c=>({
-                c : c,
-                n : toCity[c]
+            var toCities = Object.keys(toCity).map((c) => ({
+                c: c,
+                n: toCity[c],
             }));
-            fromCities.sort((a,b)=>{
-                return a.n>b.n?-1:a.n<b.n?1:0;
+            fromCities.sort((a, b) => {
+                return a.n > b.n ? -1 : a.n < b.n ? 1 : 0;
             });
-            toCities.sort((a,b)=>{
-                return a.n>b.n?-1:a.n<b.n?1:0;
+            toCities.sort((a, b) => {
+                return a.n > b.n ? -1 : a.n < b.n ? 1 : 0;
             });
             var topPointCitys = {};
-            for(var i=0;i<fromCities.length&&i<3;i++){
+            for (var i = 0; i < fromCities.length && i < 3; i++) {
                 topPointCitys[fromCities[i].c] = true;
             }
-            for(var i=0;i<toCities.length&&i<3;i++){
+            for (var i = 0; i < toCities.length && i < 3; i++) {
                 topPointCitys[toCities[i].c] = true;
             }
-            this.chartOptionsMap.setOption.series[7].data = Object.keys(topPointCitys).map(c=>({
-                name: c,
-                value: cityLoc.zh[c].concat([1]),
-            }));
+            // this.chartOptionsMap.setOption.series[7].data = Object.keys(topPointCitys).map(c=>({
+            //     name: c,
+            //     value: cityLoc.zh[c].concat([1]),
+            // }));
             this.flightv0 = flightv0;
             this.flightv1 = flightv1;
             this.flightv2 = flightv2;
@@ -720,8 +721,6 @@ export default {
                     cityLoc.zh[item.toName]
                 ) {
                     back++;
-                } else {
-                    return;
                 }
 
                 if (!pointMap[item.fromName]) {
@@ -753,8 +752,6 @@ export default {
 
             this.chartOptionsWorldMap.setOption.series[1].data = points;
             this.chartOptionsWorldMap.setOption.series[2].data = lines;
-
-            debugger;
 
             var total = Math.ceil(Math.max(out, back) * 1.2);
 

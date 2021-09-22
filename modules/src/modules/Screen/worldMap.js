@@ -73,6 +73,9 @@ export default function(ctx) {
 						//图形上的文本标签，可用于说明图形的一些数据信息，比如值，名称等
 						show: false,
 					},
+					encode: {
+						value: 2,
+					},
 					symbolSize: 1,
 					itemStyle: {
 						color: "#FFF",
